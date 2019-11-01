@@ -101,8 +101,27 @@ add_filter( 'style_loader_src', '_remove_script_version', 15, 1 );
 @ini_set( 'post_max_size', '10000M');
 @ini_set( 'max_execution_time', '5000' );
 
+/*--------------------SHORTCODES-----------------------*/
 function astra_child_productor_link_short_code($attr){
 	$user_data = get_userdata($attr['id']);
 	return '<h2> Productor: <a href="/parroquianos/'.$user_data->user_login.'">'.$user_data->first_name.' '.$user_data->last_name.'</a></h2>';
 }
 add_shortcode('astra_child_productor_link', 'astra_child_productor_link_short_code');
+
+function astra_child_posts_list_1_short_code($attr){
+	$html   = '<div>';
+	$categs = get_categories(
+		[
+			'parent'   => get_categories(['name' => $attr['child_of']])[0]->cat_ID,
+			'orderby'  => 'name',
+			'order'    => 'ASC',
+	  ]);
+		
+	foreach ( $categs as $categ ) {
+		$html .= '<p><a class="tag-cloud-link tag-link-2408 tag-link-position-1" href="'.esc_url( get_category_link( $categ->term_id ) ).'">'.$categ->name.',</a></p>';
+	}
+	$html .= '</div>';
+
+	return $html;
+}
+add_shortcode('astra_child_posts_list_1', 'astra_child_posts_list_1_short_code');
