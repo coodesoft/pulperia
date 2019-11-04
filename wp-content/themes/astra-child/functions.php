@@ -109,16 +109,16 @@ function astra_child_productor_link_short_code($attr){
 add_shortcode('astra_child_productor_link', 'astra_child_productor_link_short_code');
 
 function astra_child_posts_list_1_short_code($attr){
-	$html   = '<div>';
+	$html   = '<div style="text-align: justify;">';
 	$categs = get_categories(
 		[
 			'parent'   => get_categories(['name' => $attr['child_of']])[0]->cat_ID,
 			'orderby'  => 'name',
 			'order'    => 'ASC',
 	  ]);
-		
+
 	foreach ( $categs as $categ ) {
-		$html .= '<p><a class="tag-cloud-link tag-link-2408 tag-link-position-1" href="'.esc_url( get_category_link( $categ->term_id ) ).'">'.$categ->name.',</a></p>';
+		$html .= '<span><a class="tag-cloud-link tag-link-2408 tag-link-position-1" href="'.esc_url( get_category_link( $categ->term_id ) ).'">'.$categ->name.',</a></span>';
 	}
 	$html .= '</div>';
 
