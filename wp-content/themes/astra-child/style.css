@@ -9,3 +9,16 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Text Domain: astra-child
 Template: astra
 */
+
+.astra-cluod-tag:hover{ background: #000; }
+
+.astra-cluod-tag:hover a { text-decoration: none; color:#fff; }
+
+.astra-cluod-tag { padding: 2px; display: inline-block;}
+
+.astra-cloud {
+  display: flex;
+  flex-flow: wrap-reverse;
+  justify-content: space-around;
+  align-content: space-between;
+}

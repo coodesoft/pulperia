@@ -109,19 +109,29 @@ function astra_child_productor_link_short_code($attr){
 add_shortcode('astra_child_productor_link', 'astra_child_productor_link_short_code');
 
 function astra_child_posts_list_1_short_code($attr){
-	$html   = '<div style="text-align: justify;">';
-	$categs = get_categories(
-		[
-			'parent'   => get_categories(['name' => $attr['child_of']])[0]->cat_ID,
-			'orderby'  => 'name',
-			'order'    => 'ASC',
-	  ]);
+	$font_zMin = 15; if (isset($attr['font_size_min'])) { $font_zMin = $attr['font_size_min']; }
+	$font_zMax = 25; if (isset($attr['font_size_max'])) { $font_zMax = $attr['font_size_max']; }
+
+	$html       = '<div class="astra-cloud">';
+
+	$parent_cat    = get_categories([ 'name'    => $attr['child_of']])[0]->cat_ID;
+	$categs        = get_categories([	'parent'  => $parent_cat, 'orderby'  => 'count',  'order'   => 'ASC' ]);
+	$cats_by_count = get_categories([ 'parent'  => $parent_cat,	'orderby'  => 'count', 'order'    => 'ASC' ]);
+
+	$cats_max_count = $cats_by_count[count($cats_by_count)]->count;
+	$cats_min_count = $cats_by_count[0]->count;
 
 	foreach ( $categs as $categ ) {
-		$html .= '<span><a class="tag-cloud-link tag-link-2408 tag-link-position-1" href="'.esc_url( get_category_link( $categ->term_id ) ).'">'.$categ->name.',</a></span>';
+		$font_size = $categ->count * ( ($font_zMax - $font_zMin) / ($cats_max_count - $cats_min_count) ) + $font_zMin;
+		$html .= '<div class="astra-cluod-tag" style="font-size:'.$font_size.'px;"><a class="tag-cloud-link tag-link-2408 tag-link-position-1" href="'.esc_url( get_category_link( $categ->term_id ) ).'">'.$categ->name.'</a></div>';
 	}
 	$html .= '</div>';
 
 	return $html;
 }
 add_shortcode('astra_child_posts_list_1', 'astra_child_posts_list_1_short_code');
+
+function astra_phpinfo_short_code($attr){
+	return phpinfo();
+}
+add_shortcode('astra_phpinfo_short_code', 'astra_phpinfo_short_code');
