@@ -22,3 +22,9 @@ Template: astra
   justify-content: space-around;
   align-content: space-between;
 }
+
+@media only screen and (max-width: 1025px) {
+	.ast-page-builder-template .site-content #primary {
+			padding: 0px 8px !important;
+	}
+}	
