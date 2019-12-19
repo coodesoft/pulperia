@@ -135,3 +135,64 @@ function astra_phpinfo_short_code($attr){
 	return phpinfo();
 }
 add_shortcode('astra_phpinfo_short_code', 'astra_phpinfo_short_code');
+
+function astra_child_postimage_carousel($attr){
+
+	$args = [
+    'post_type'   => 'attachment',
+    'numberposts' => null,
+    'post_status' => null,
+    'post_parent' => $attr['id']
+  ];
+
+	$imagenes = get_posts($args);
+
+	if ($imagenes) {
+		$html = '<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+						 <div id="myCarousel" class="carousel slide" data-ride="carousel">
+					       <ol class="carousel-indicators">';
+
+		$c             = 0;
+		$class         = '';
+		$carousel_name = 'myCarousel';
+		foreach ($imagenes as $imagen) {
+			if ($c == 0) { $class = 'active'; } else { $class = ''; }
+			$html .= '<li data-target="#'.$carousel_name.'" data-slide-to="'.$c.'" class="'.$class.'"></li>';
+			$c ++;
+		}
+
+		$html .= '</ol>';
+
+		$html .= '<div class="carousel-inner" role="listbox">';
+
+		$c = 0;
+		foreach ($imagenes as $imagen) {
+	     if ($c == 0) { $class = 'item active'; } else { $class = 'item'; }
+
+			 $img_url = wp_get_attachment_image_src($imagen->ID, 'full')[0];
+
+			 $html .= '<div class="'.$class.'">
+									 <img src="'.$img_url.'" alt="Chania">
+									 <div class="carousel-caption">
+										 	<h3>'.apply_filters( 'the_title', $imagen->post_title ).'</h3>
+										 	<p></p>
+									 </div>
+								 </div>';
+			 $c ++;
+	  }
+
+		$html .= '</div>';
+		$html .= '<a class="left carousel-control" href="#'.$carousel_name.'" role="button" data-slide="prev">
+							<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+							<span class="sr-only">Previous</span>
+							</a>
+							<a class="right carousel-control" href="#'.$carousel_name.'" role="button" data-slide="next">
+							<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+							<span class="sr-only">Next</span>
+							</a>
+							</div>';
+	}
+
+	return $html;
+}
+add_shortcode('astra_child_postimage_carousel', 'astra_child_postimage_carousel');
