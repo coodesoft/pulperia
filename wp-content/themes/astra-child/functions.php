@@ -196,3 +196,43 @@ function astra_child_postimage_carousel($attr){
 	return $html;
 }
 add_shortcode('astra_child_postimage_carousel', 'astra_child_postimage_carousel');
+
+
+//Buddyppress
+add_action( 'bp_before_member_activity_post_form', 'bp_before_member_activity_post_form_f' );
+function bp_before_member_activity_post_form_f(){
+	$productor = bp_displayed_user_id();
+
+	//se buscan los productos asociados al productor
+	$productos = get_posts(array(
+		'post_type'		=> 'product',
+		'meta_key'		=> 'productor_id',
+		'meta_value'	=> $productor
+	));
+
+	//se genera el listado de productos
+	if (count($productos) > 0){
+		$html = '<div class="col-12">
+							<div class="row"><div class="col-12"><h3><b>Productos</b></h3></div></div>
+							<div class="row">';
+
+		for ($c=0; $c < count($productos); $c++){
+			$enlace = get_post_permalink($productos[$c]->ID);
+			$html .= '<div class="col-12">
+									<div class="row"><div class="col-12"><h3><a href="'.$enlace.'">'.$productos[$c]->post_title.'</a></h3></div></div>
+									<div class="row">
+										<div class="col-12 col-sm-4 col-md-3">
+											<img class="img-responsive" src="'.get_the_post_thumbnail_url($productos[$c]->ID).'" />
+										</div>
+										<div class="col-12 col-sm-8 col-md-9">
+											<p>'.$productos[$c]->post_content.'</p>
+										</div>
+									</div>
+								</div>';
+		}
+
+		$html .= '</div></div>';
+	}
+
+	echo $html;
+}
