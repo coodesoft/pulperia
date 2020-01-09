@@ -54,3 +54,17 @@ Template: astra
 
 
 #groups-personal-li, #forums-personal-li, #activity-groups-personal-li { display: none; }
+
+.as-cont-prod {
+  margin-bottom: 32px;
+  padding-top: 15px;
+  border-top: 1px solid rgba(100,100,100,0.5);
+}
+
+.woocommerce-billing-fields .form-row, .woocommerce-shipping-fields .form-row,.woocommerce form .form-row {
+display: block;
+}
+
+.woocommerce .col2-set .col-1, .woocommerce-page .col2-set .col-1,.woocommerce .col2-set .col-2, .woocommerce-page .col2-set .col-2 {
+max-width: unset;
+}

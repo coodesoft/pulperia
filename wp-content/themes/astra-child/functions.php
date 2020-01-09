@@ -218,13 +218,13 @@ function bp_before_member_activity_post_form_f(){
 
 		for ($c=0; $c < count($productos); $c++){
 			$enlace = get_post_permalink($productos[$c]->ID);
-			$html .= '<div class="col-12">
-									<div class="row"><div class="col-12"><h3><a href="'.$enlace.'">'.$productos[$c]->post_title.'</a></h3></div></div>
+			$html .= '<div class="col-12 as-cont-prod">
+									<div class="row"><div class="col-12"><h3><b><a href="'.$enlace.'">'.$productos[$c]->post_title.'</a></b></h3></div></div>
 									<div class="row">
-										<div class="col-12 col-sm-4 col-md-3">
+										<div class="col-12 col-sm-4 col-md-3 col-lg-2">
 											<img class="img-responsive" src="'.get_the_post_thumbnail_url($productos[$c]->ID).'" />
 										</div>
-										<div class="col-12 col-sm-8 col-md-9">
+										<div class="col-12 col-sm-8 col-md-9 col-lg-10">
 											<p>'.$productos[$c]->post_content.'</p>
 										</div>
 									</div>
@@ -235,4 +235,30 @@ function bp_before_member_activity_post_form_f(){
 	}
 
 	echo $html;
+}
+
+
+/*------------------------------------------------------------------------------------------------------------
+------------------------------------------- WOOCOMMERCE ------------------------------------------------------
+------------------------------------------------------------------------------------------------------------*/
+add_filter( 'woocommerce_product_query_meta_query', 'shop_only_instock_products', 10, 2 );
+function shop_only_instock_products( $meta_query, $query ) {
+    // In frontend only
+    if( is_admin() ) return $meta_query;
+
+    $meta_query['relation'] = 'OR';
+
+    $meta_query[] = array(
+        'key'     => '_price',
+        'value'   => '',
+        'type'    => 'numeric',
+        'compare' => '!='
+    );
+    $meta_query[] = array(
+        'key'     => '_price',
+        'value'   => 0,
+        'type'    => 'numeric',
+        'compare' => '!='
+    );
+    return $meta_query;
 }
