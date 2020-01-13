@@ -4,7 +4,7 @@
  *
  * @package     Astra
  * @author      Astra
- * @copyright   Copyright (c) 2019, Astra
+ * @copyright   Copyright (c) 2020, Astra
  * @link        https://wpastra.com/
  * @since       Astra 1.0.0
  */
@@ -16,7 +16,16 @@
 
 		<?php astra_blog_post_thumbnail_and_title_order(); ?>
 
-		<div class="entry-content clear" itemprop="text">
+		<div class="entry-content clear"
+			<?php
+				echo astra_attr(
+					'article-entry-content-blog-layout',
+					array(
+						'class' => '',
+					)
+				);
+				?>
+		>
 
 			<?php astra_entry_content_before(); ?>
 

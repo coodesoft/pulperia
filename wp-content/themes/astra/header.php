@@ -10,6 +10,10 @@
  * @since 1.0.0
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
+
 ?><!DOCTYPE html>
 <?php astra_html_before(); ?>
 <html <?php language_attributes(); ?>>
@@ -17,29 +21,27 @@
 <?php astra_head_top(); ?>
 <meta charset="<?php bloginfo( 'charset' ); ?>">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
 <link rel="profile" href="https://gmpg.org/xfn/11">
 
 <?php wp_head(); ?>
 <?php astra_head_bottom(); ?>
-<!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=UA-55467244-1"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'UA-55467244-1');
-</script>
-
-
 </head>
 
 <body <?php astra_schema_body(); ?> <?php body_class(); ?>>
 
 <?php astra_body_top(); ?>
 <?php wp_body_open(); ?>
-<div id="page" class="hfeed site">
+<div 
+	<?php
+	echo astra_attr(
+		'site',
+		array(
+			'id'    => 'page',
+			'class' => 'hfeed site',
+		)
+	);
+	?>
+>
 	<a class="skip-link screen-reader-text" href="#content"><?php echo esc_html( astra_default_strings( 'string-header-skip-link', false ) ); ?></a>
 
 	<?php astra_header_before(); ?>

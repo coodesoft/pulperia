@@ -6,10 +6,14 @@
  *
  * @package     Astra
  * @author      Astra
- * @copyright   Copyright (c) 2019, Astra
+ * @copyright   Copyright (c) 2020, Astra
  * @link        https://wpastra.com/
  * @since       Astra 1.1.0
  */
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
 
 /**
  * Shop page - Products Title markup updated
@@ -54,7 +58,7 @@ if ( ! function_exists( 'astra_woo_shop_parent_category' ) ) :
 				$product_categories = htmlspecialchars_decode( strip_tags( $product_categories ) );
 				if ( $product_categories ) {
 					list( $parent_cat ) = explode( ';', $product_categories );
-					echo esc_html( $parent_cat );
+					echo apply_filters( 'astra_woo_shop_product_categories', esc_html( $parent_cat ), get_the_ID() );
 				}
 
 				?>

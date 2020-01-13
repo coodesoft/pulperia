@@ -12,7 +12,17 @@
 
 <?php astra_entry_before(); ?>
 
-<article itemtype="https://schema.org/CreativeWork" itemscope="itemscope" id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
+<article 
+	<?php
+		echo astra_attr(
+			'article-blog',
+			array(
+				'id'    => 'post-' . get_the_id(),
+				'class' => join( ' ', get_post_class() ),
+			)
+		);
+		?>
+>
 
 	<?php astra_entry_top(); ?>
 

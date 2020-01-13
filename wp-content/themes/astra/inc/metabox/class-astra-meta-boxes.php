@@ -4,10 +4,14 @@
  *
  * @package     Astra
  * @author      Astra
- * @copyright   Copyright (c) 2019, Astra
+ * @copyright   Copyright (c) 2020, Astra
  * @link        https://wpastra.com/
  * @since       Astra 1.0.0
  */
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
 
 /**
  * Meta Boxes setup
@@ -190,9 +194,12 @@ if ( ! class_exists( 'Astra_Meta_Boxes' ) ) {
 			wp_nonce_field( basename( __FILE__ ), 'astra_settings_meta_box' );
 			$stored = get_post_meta( $post->ID );
 
-			// Set stored and override defaults.
-			foreach ( $stored as $key => $value ) {
-				self::$meta_option[ $key ]['default'] = ( isset( $stored[ $key ][0] ) ) ? $stored[ $key ][0] : '';
+			if ( is_array( $stored ) ) {
+
+				// Set stored and override defaults.
+				foreach ( $stored as $key => $value ) {
+					self::$meta_option[ $key ]['default'] = ( isset( $stored[ $key ][0] ) ) ? $stored[ $key ][0] : '';
+				}
 			}
 
 			// Get defaults.
@@ -263,7 +270,7 @@ if ( ! class_exists( 'Astra_Meta_Boxes' ) ) {
 							<?php esc_html_e( 'Disable Primary Header', 'astra' ); ?>
 						</label>
 					</div>
-
+					<?php do_action( 'astra_meta_box_markup_disable_sections_after_primary_header', $meta ); ?>
 					<?php if ( $show_meta_field ) { ?>
 						<div class="site-post-title-option-wrap">
 							<label for="site-post-title">
@@ -271,6 +278,17 @@ if ( ! class_exists( 'Astra_Meta_Boxes' ) ) {
 								<?php esc_html_e( 'Disable Title', 'astra' ); ?>
 							</label>
 						</div>
+						<?php
+						$ast_breadcrumbs_content = astra_get_option( 'ast-breadcrumbs-content' );
+						if ( 'disabled' != $ast_breadcrumbs_content && 'none' !== astra_get_option( 'breadcrumb-position' ) ) {
+							?>
+					<div class="ast-breadcrumbs-content-option-wrap">
+						<label for="ast-breadcrumbs-content">
+							<input type="checkbox" id="ast-breadcrumbs-content" name="ast-breadcrumbs-content" value="disabled" <?php checked( $breadcrumbs_content, 'disabled' ); ?> />
+							<?php esc_html_e( 'Disable Breadcrumb', 'astra' ); ?>
+						</label>
+					</div>
+						<?php } ?>
 
 						<div class="ast-featured-img-option-wrap">
 							<label for="ast-featured-img">
@@ -305,16 +323,7 @@ if ( ! class_exists( 'Astra_Meta_Boxes' ) ) {
 					</div>
 						<?php
 					}
-					$ast_breadcrumbs_content = astra_get_option( 'ast-breadcrumbs-content' );
-					if ( 'disabled' != $ast_breadcrumbs_content && 'none' !== astra_get_option( 'breadcrumb-position' ) ) {
-						?>
-					<div class="ast-breadcrumbs-content-option-wrap">
-						<label for="ast-breadcrumbs-content">
-							<input type="checkbox" id="ast-breadcrumbs-content" name="ast-breadcrumbs-content" value="disabled" <?php checked( $breadcrumbs_content, 'disabled' ); ?> />
-							<?php esc_html_e( 'Disable Breadcrumb', 'astra' ); ?>
-						</label>
-					</div>
-					<?php } ?>
+					?>
 					<?php do_action( 'astra_meta_box_markup_disable_sections_after', $meta ); ?>
 				</div>
 			</div>

@@ -22,6 +22,10 @@
  * @license   http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
+
 /**
  * Astra Get Breadcrumb
  *
@@ -234,7 +238,8 @@ class Astra_Breadcrumb_Trail {
 			'show_browse'     => true,
 			'labels'          => array(),
 			'post_taxonomy'   => array(),
-			'echo'            => true
+			'echo'            => true,
+			'schema'          => true,
 		);
 
 		// Parse the arguments with the deaults.
@@ -263,6 +268,7 @@ class Astra_Breadcrumb_Trail {
 		$breadcrumb    = '';
 		$item_count    = count( $this->items );
 		$item_position = 0;
+		$meta          = '';
 
 		// Connect the breadcrumb trail if there are items in the trail.
 		if ( 0 < $item_count ) {
@@ -279,13 +285,29 @@ class Astra_Breadcrumb_Trail {
 
 			// Open the unordered list.
 			$breadcrumb .= sprintf(
-				'<%s class="trail-items" itemscope itemtype="http://schema.org/BreadcrumbList">',
-				tag_escape( $this->args['list_tag'] )
+				'<%1$s class="trail-items" %2$s>',
+				tag_escape( $this->args['list_tag'] ),
+				( $this->args['schema'] ? 'itemscope itemtype="http://schema.org/BreadcrumbList"' : '' )
 			);
-
-			// Add the number of items and item list order schema.
-			$breadcrumb .= sprintf( '<meta name="numberOfItems" content="%d" />', absint( $item_count ) );
-			$breadcrumb .= '<meta name="itemListOrder" content="Ascending" />';
+				
+			if ( $this->args['schema'] ) {
+				// Add the number of items and item list order schema.
+				$breadcrumb .= sprintf( '<meta content="%1$d" %2$s />', absint( $item_count ), astra_attr(
+					'breadcrumb-trail-items-num-meta',
+					array(
+						'name'  => 'numberOfItems',
+						'class' => '',
+					)
+				) );
+				$breadcrumb .= '<meta ' . astra_attr(
+					'breadcrumb-trail-items-list-meta',
+					array(
+						'class'   => '',
+						'name'    => 'itemListOrder',
+						'content' => 'Ascending',
+					)
+				) . '/>';
+			}
 
 			// Loop through the items and add them to the list.
 			foreach ( $this->items as $item ) {
@@ -297,10 +319,10 @@ class Astra_Breadcrumb_Trail {
 				preg_match( '/(<a.*?>)(.*?)(<\/a>)/i', $item, $matches );
 
 				// Wrap the item text with appropriate itemprop.
-				$item = ! empty( $matches ) ? sprintf( '%s<span itemprop="name">%s</span>%s', $matches[1], $matches[2], $matches[3] ) : sprintf( '<span>%s</span>', $item );
+				$item = ! empty( $matches ) ? sprintf( '%s<span %s>%s</span>%s', $matches[1], $this->args['schema'] ? 'itemprop="name"' : '', $matches[2], $matches[3] ) : sprintf( '<span>%s</span>', $item );
 
 				// Wrap the item with its itemprop.
-				$item = ! empty( $matches )
+				$item = ( ! empty( $matches ) && $this->args['schema'] )
 					? preg_replace( '/(<a.*?)([\'"])>/i', '$1$2 itemprop=$2item$2>', $item )
 					: sprintf( '<span>%s</span>', $item );
 
@@ -316,10 +338,14 @@ class Astra_Breadcrumb_Trail {
 				}
 
 				// Create list item attributes.
-				$attributes = $item_schema_attr . ' class="' . $item_class . '"';
+				$attributes = $this->args['schema'] ? $item_schema_attr : '';
+
+				$attributes .= ' class="' . $item_class . '"';
 				
-				// Build the meta position HTML.
-				$meta = sprintf( '<meta itemprop="position" content="%s" />', absint( $item_position ) );
+				if ( $this->args['schema'] ) {
+					// Build the meta position HTML.
+					$meta = sprintf( '<meta itemprop="position" content="%s" />', absint( $item_position ) );
+				}
 				
 				if ( $item_count === $item_position ) {
 					$meta = '';
@@ -334,12 +360,13 @@ class Astra_Breadcrumb_Trail {
 
 			// Wrap the breadcrumb trail.
 			$breadcrumb = sprintf(
-				'<%1$s role="navigation" aria-label="%2$s" class="breadcrumb-trail breadcrumbs" itemprop="breadcrumb">%3$s%4$s%5$s</%1$s>',
+				'<%1$s role="navigation" aria-label="%2$s" class="breadcrumb-trail breadcrumbs" %6$s>%3$s%4$s%5$s</%1$s>',
 				tag_escape( $this->args['container'] ),
 				esc_attr( $this->labels['aria_label'] ),
 				$this->args['before'],
 				$breadcrumb,
-				$this->args['after']
+				$this->args['after'],
+				$this->args['schema'] ? 'sitemprop="breadcrumb"' : ''
 			);
 		}
 

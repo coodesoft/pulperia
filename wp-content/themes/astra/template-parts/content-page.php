@@ -12,7 +12,17 @@
 
 <?php astra_entry_before(); ?>
 
-<article itemtype="https://schema.org/CreativeWork" itemscope="itemscope" id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
+<article 
+	<?php
+		echo astra_attr(
+			'article-page',
+			array(
+				'id'    => 'post-' . get_the_id(),
+				'class' => join( ' ', get_post_class() ),
+			)
+		);
+		?>
+>
 
 	<?php astra_entry_top(); ?>
 
@@ -20,10 +30,29 @@
 
 		<?php astra_get_post_thumbnail(); ?>
 
-		<?php astra_the_title( '<h1 class="entry-title" itemprop="headline">', '</h1>' ); ?>
+		<?php
+		astra_the_title(
+			'<h1 class="entry-title" ' . astra_attr(
+				'article-title-content-page',
+				array(
+					'class' => '',
+				)
+			) . '>',
+			'</h1>'
+		);
+		?>
 	</header><!-- .entry-header -->
 
-	<div class="entry-content clear" itemprop="text">
+	<div class="entry-content clear" 
+		<?php
+				echo astra_attr(
+					'article-entry-content-page',
+					array(
+						'class' => '',
+					)
+				);
+				?>
+	>
 
 		<?php astra_entry_content_before(); ?>
 
@@ -46,7 +75,6 @@
 
 	<?php
 		astra_edit_post_link(
-
 			sprintf(
 				/* translators: %s: Name of current post */
 				esc_html__( 'Edit %s', 'astra' ),

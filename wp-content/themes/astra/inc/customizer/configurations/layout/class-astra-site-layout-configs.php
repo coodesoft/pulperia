@@ -4,7 +4,7 @@
  *
  * @package     Astra
  * @author      Astra
- * @copyright   Copyright (c) 2019, Astra
+ * @copyright   Copyright (c) 2020, Astra
  * @link        https://wpastra.com/
  * @since       Astra 1.0.0
  */
@@ -39,7 +39,7 @@ if ( ! class_exists( 'Astra_Site_Layout_Configs' ) ) {
 					'default'     => 1200,
 					'section'     => 'section-container-layout',
 					'priority'    => 10,
-					'title'       => __( 'Container Width', 'astra' ),
+					'title'       => __( 'Width', 'astra' ),
 					'required'    => array( ASTRA_THEME_SETTINGS . '[site-layout]', '==', 'ast-full-width-layout' ),
 					'suffix'      => '',
 					'input_attrs' => array(

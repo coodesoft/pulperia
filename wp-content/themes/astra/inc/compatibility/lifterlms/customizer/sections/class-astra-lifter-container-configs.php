@@ -4,7 +4,7 @@
  *
  * @package     Astra
  * @author      Brainstorm Force
- * @copyright   Copyright (c) 2019, Brainstorm Force
+ * @copyright   Copyright (c) 2020, Brainstorm Force
  * @link        https://www.brainstormforce.com
  * @since       1.4.3
  */
@@ -56,7 +56,7 @@ if ( ! class_exists( 'Astra_Lifter_Container_Configs' ) ) {
 					'section'  => 'section-container-layout',
 					'default'  => astra_get_option( 'lifterlms-content-layout' ),
 					'priority' => 66,
-					'title'    => __( 'Container for LifterLMS', 'astra' ),
+					'title'    => __( 'LifterLMS Layout', 'astra' ),
 					'choices'  => array(
 						'default'                 => __( 'Default', 'astra' ),
 						'boxed-container'         => __( 'Boxed', 'astra' ),

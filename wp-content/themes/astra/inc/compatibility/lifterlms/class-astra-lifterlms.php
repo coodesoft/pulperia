@@ -385,9 +385,8 @@ if ( ! class_exists( 'Astra_LifterLMS' ) ) :
 			$btn_bg_color   = astra_get_option( 'button-bg-color', '', $link_color );
 			$btn_bg_h_color = astra_get_option( 'button-bg-h-color', '', $link_h_color );
 
-			$btn_border_radius      = astra_get_option( 'button-radius' );
-			$btn_vertical_padding   = astra_get_option( 'button-v-padding' );
-			$btn_horizontal_padding = astra_get_option( 'button-h-padding' );
+			$btn_border_radius = astra_get_option( 'button-radius' );
+			$theme_btn_padding = astra_get_option( 'theme-button-padding' );
 
 			$css_output = array(
 				'a.llms-button-primary, .llms-button-secondary, .llms-button-action, button.llms-field-button, a.llms-field-button' => array(
@@ -396,8 +395,11 @@ if ( ! class_exists( 'Astra_LifterLMS' ) ) :
 					'background-color' => $btn_bg_color,
 				),
 				'a.llms-button-primary, .llms-button-secondary, .llms-button-action, .llms-field-button, .llms-button-action.large' => array(
-					'border-radius' => astra_get_css_value( $btn_border_radius, 'px' ),
-					'padding'       => astra_get_css_value( $btn_vertical_padding, 'px' ) . ' ' . astra_get_css_value( $btn_horizontal_padding, 'px' ),
+					'border-radius'  => astra_get_css_value( $btn_border_radius, 'px' ),
+					'padding-top'    => astra_responsive_spacing( $theme_btn_padding, 'top', 'desktop' ),
+					'padding-right'  => astra_responsive_spacing( $theme_btn_padding, 'right', 'desktop' ),
+					'padding-bottom' => astra_responsive_spacing( $theme_btn_padding, 'bottom', 'desktop' ),
+					'padding-left'   => astra_responsive_spacing( $theme_btn_padding, 'left', 'desktop' ),
 				),
 				'a.llms-button-primary:hover, a.llms-button-primary:focus, .llms-button-secondary:hover, .llms-button-secondary:focus, .llms-button-action:hover, .llms-button-action:focus, button.llms-field-button:hover, button.llms-field-button:focus, a.llms-field-button:hover, a.llms-field-button:focus' => array(
 					'color'            => $btn_h_color,
@@ -434,6 +436,34 @@ if ( ! class_exists( 'Astra_LifterLMS' ) ) :
 			/* Parse CSS from array() */
 			$css_output = astra_parse_css( $css_output );
 
+			/**
+			 * Global button CSS - Tablet.
+			 */
+			$css_global_button_tablet = array(
+				'a.llms-button-primary, .llms-button-secondary, .llms-button-action, .llms-field-button, .llms-button-action.large' => array(
+					'padding-top'    => astra_responsive_spacing( $theme_btn_padding, 'top', 'tablet' ),
+					'padding-right'  => astra_responsive_spacing( $theme_btn_padding, 'right', 'tablet' ),
+					'padding-bottom' => astra_responsive_spacing( $theme_btn_padding, 'bottom', 'tablet' ),
+					'padding-left'   => astra_responsive_spacing( $theme_btn_padding, 'left', 'tablet' ),
+				),
+			);
+
+			$css_output .= astra_parse_css( $css_global_button_tablet, '', '768' );
+
+			/**
+			 * Global button CSS - Mobile.
+			 */
+			$css_global_button_mobile = array(
+				'a.llms-button-primary, .llms-button-secondary, .llms-button-action, .llms-field-button, .llms-button-action.large' => array(
+					'padding-top'    => astra_responsive_spacing( $theme_btn_padding, 'top', 'mobile' ),
+					'padding-right'  => astra_responsive_spacing( $theme_btn_padding, 'right', 'mobile' ),
+					'padding-bottom' => astra_responsive_spacing( $theme_btn_padding, 'bottom', 'mobile' ),
+					'padding-left'   => astra_responsive_spacing( $theme_btn_padding, 'left', 'mobile' ),
+				),
+			);
+
+			$css_output .= astra_parse_css( $css_global_button_mobile, '', '544' );
+
 			wp_add_inline_style( 'lifterlms-styles', apply_filters( 'astra_theme_lifterlms_dynamic_css', $css_output ) );
 
 		}
@@ -454,7 +484,7 @@ if ( ! class_exists( 'Astra_LifterLMS' ) ) :
 
 				<?php astra_primary_content_top(); ?>
 
-				<main id="main" class="site-main" role="main">
+				<main id="main" class="site-main">
 					<div class="ast-lifterlms-container">
 			<?php
 		}

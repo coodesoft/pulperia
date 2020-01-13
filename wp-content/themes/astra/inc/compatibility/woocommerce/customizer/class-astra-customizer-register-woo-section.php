@@ -4,11 +4,15 @@
  *
  * @package     Astra
  * @author      Astra
- * @copyright   Copyright (c) 2019, Astra
+ * @copyright   Copyright (c) 2020, Astra
  * @link        https://wpastra.com/
  * @since       Astra 1.1.0
  * @since       1.4.6 Chnaged to using Astra_Customizer API
  */
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
 
 if ( ! class_exists( 'Astra_Customizer_Register_Woo_Section' ) ) {
 
@@ -28,51 +32,36 @@ if ( ! class_exists( 'Astra_Customizer_Register_Woo_Section' ) ) {
 		public function register_configuration( $configurations, $wp_customize ) {
 
 			$configs = array(
-				/**
-				 * WooCommerce
-				 */
-				array(
-					'name'     => 'section-woo-group',
-					'type'     => 'section',
-					'title'    => __( 'WooCommerce', 'astra' ),
-					'panel'    => 'panel-layout',
-					'priority' => 60,
-				),
 
 				array(
 					'name'     => 'section-woo-general',
 					'title'    => __( 'General', 'astra' ),
 					'type'     => 'section',
-					'panel'    => 'panel-layout',
-					'section'  => 'section-woo-group',
-					'priority' => 5,
+					'priority' => 10,
+					'panel'    => 'woocommerce',
 				),
-
 				array(
 					'name'     => 'section-woo-shop',
 					'title'    => __( 'Shop', 'astra' ),
 					'type'     => 'section',
-					'panel'    => 'panel-layout',
-					'section'  => 'section-woo-group',
-					'priority' => 10,
+					'priority' => 20,
+					'panel'    => 'woocommerce',
 				),
 
 				array(
 					'name'     => 'section-woo-shop-single',
 					'type'     => 'section',
 					'title'    => __( 'Single Product', 'astra' ),
-					'panel'    => 'panel-layout',
-					'section'  => 'section-woo-group',
-					'priority' => 15,
+					'priority' => 12,
+					'panel'    => 'woocommerce',
 				),
 
 				array(
 					'name'     => 'section-woo-shop-cart',
 					'type'     => 'section',
-					'title'    => __( 'Cart Page', 'astra' ),
-					'panel'    => 'panel-layout',
-					'section'  => 'section-woo-group',
+					'title'    => __( 'Cart', 'astra' ),
 					'priority' => 20,
+					'panel'    => 'woocommerce',
 				),
 			);
 

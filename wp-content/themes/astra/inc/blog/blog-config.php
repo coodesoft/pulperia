@@ -6,6 +6,10 @@
  * @package Astra
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
+
 /**
  * Common Functions for Blog and Single Blog
  *
@@ -132,13 +136,36 @@ if ( ! function_exists( 'astra_post_author' ) ) {
 
 		ob_start();
 
-		?>
-
-		<span class="posted-by vcard author" itemtype="https://schema.org/Person" itemscope="itemscope" itemprop="author">
-			<?php // Translators: Author Name. ?>
-			<a class="url fn n" title="<?php printf( esc_attr__( 'View all posts by %1$s', 'astra' ), get_the_author() ); ?>" 
-				href="<?php echo get_author_posts_url( get_the_author_meta( 'ID' ) ); ?>" rel="author" itemprop="url">
-				<span class="author-name" itemprop="name"><?php echo get_the_author(); ?></span>
+		echo '<span ';
+			echo astra_attr(
+				'post-meta-author',
+				array(
+					'class' => 'posted-by vcard author',
+				)
+			);
+		echo '>';
+			// Translators: Author Name. ?>
+			<a title="<?php printf( esc_attr__( 'View all posts by %1$s', 'astra' ), get_the_author() ); ?>" 
+				href="<?php echo get_author_posts_url( get_the_author_meta( 'ID' ) ); ?>" rel="author"
+				<?php
+					echo astra_attr(
+						'author-url',
+						array(
+							'class' => 'url fn n',
+						)
+					);
+				?>
+				>
+				<span
+				<?php
+					echo astra_attr(
+						'author-name',
+						array(
+							'class' => 'author-name',
+						)
+					);
+				?>
+				><?php echo get_the_author(); ?></span>
 			</a>
 		</span>
 
@@ -216,12 +243,6 @@ if ( ! function_exists( 'astra_post_comments' ) ) {
 				 */
 				comments_popup_link( astra_default_strings( 'string-blog-meta-leave-a-comment', false ), astra_default_strings( 'string-blog-meta-one-comment', false ), astra_default_strings( 'string-blog-meta-multiple-comment', false ) );
 				?>
-
-				<!-- Comment Schema Meta -->
-				<span itemprop="interactionStatistic" itemscope itemtype="https://schema.org/InteractionCounter">
-					<meta itemprop="interactionType" content="https://schema.org/CommentAction" />
-					<meta itemprop="userInteractionCount" content="<?php echo absint( wp_count_comments( get_the_ID() )->approved ); ?>" />
-				</span>
 			</span>
 
 			<?php

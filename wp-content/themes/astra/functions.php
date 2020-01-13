@@ -8,25 +8,40 @@
  * @since 1.0.0
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
+
 /**
  * Define Constants
  */
-define( 'ASTRA_THEME_VERSION', '1.8.7' );
+define( 'ASTRA_THEME_VERSION', '2.2.1' );
 define( 'ASTRA_THEME_SETTINGS', 'astra-settings' );
 define( 'ASTRA_THEME_DIR', trailingslashit( get_template_directory() ) );
 define( 'ASTRA_THEME_URI', trailingslashit( esc_url( get_template_directory_uri() ) ) );
+
+
+/**
+ * Minimum Version requirement of the Astra Pro addon.
+ * This constant will be used to display the notice asking user to update the Astra addon to latest version.
+ */
+define( 'ASTRA_EXT_MIN_VER', '2.0.0' );
+
+/**
+ * Setup helper functions of Astra.
+ */
+require_once ASTRA_THEME_DIR . 'inc/core/class-astra-theme-options.php';
+require_once ASTRA_THEME_DIR . 'inc/core/class-theme-strings.php';
+require_once ASTRA_THEME_DIR . 'inc/core/common-functions.php';
 
 /**
  * Update theme
  */
 require_once ASTRA_THEME_DIR . 'inc/theme-update/class-astra-theme-update.php';
+require_once ASTRA_THEME_DIR . 'inc/theme-update/astra-update-functions.php';
+require_once ASTRA_THEME_DIR . 'inc/theme-update/class-astra-theme-background-updater.php';
 require_once ASTRA_THEME_DIR . 'inc/theme-update/class-astra-pb-compatibility.php';
 
-/**
- * Load theme hooks
- */
-require_once ASTRA_THEME_DIR . 'inc/core/class-astra-theme-options.php';
-require_once ASTRA_THEME_DIR . 'inc/core/class-theme-strings.php';
 
 /**
  * Fonts Files
@@ -38,7 +53,6 @@ if ( is_admin() ) {
 
 require_once ASTRA_THEME_DIR . 'inc/customizer/class-astra-fonts.php';
 
-require_once ASTRA_THEME_DIR . 'inc/core/common-functions.php';
 require_once ASTRA_THEME_DIR . 'inc/core/class-astra-walker-page.php';
 require_once ASTRA_THEME_DIR . 'inc/core/class-astra-enqueue-scripts.php';
 require_once ASTRA_THEME_DIR . 'inc/core/class-gutenberg-editor-css.php';
@@ -76,6 +90,8 @@ require_once ASTRA_THEME_DIR . 'inc/class-astra-after-setup-theme.php';
 
 // Required files.
 require_once ASTRA_THEME_DIR . 'inc/core/class-astra-admin-helper.php';
+
+require_once ASTRA_THEME_DIR . 'inc/schema/class-astra-schema.php';
 
 if ( is_admin() ) {
 
@@ -118,8 +134,11 @@ require_once ASTRA_THEME_DIR . 'inc/compatibility/class-astra-bne-flyout.php';
 require_once ASTRA_THEME_DIR . 'inc/compatibility/class-astra-ubermeu.php';
 require_once ASTRA_THEME_DIR . 'inc/compatibility/class-astra-divi-builder.php';
 require_once ASTRA_THEME_DIR . 'inc/compatibility/class-astra-amp.php';
+require_once ASTRA_THEME_DIR . 'inc/compatibility/class-astra-yoast-seo.php';
 require_once ASTRA_THEME_DIR . 'inc/addons/transparent-header/class-astra-ext-transparent-header.php';
 require_once ASTRA_THEME_DIR . 'inc/addons/breadcrumbs/class-astra-breadcrumbs.php';
+require_once ASTRA_THEME_DIR . 'inc/addons/heading-colors/class-astra-heading-colors.php';
+require_once ASTRA_THEME_DIR . 'inc/class-astra-filesystem.php';
 
 // Elementor Compatibility requires PHP 5.4 for namespaces.
 if ( version_compare( PHP_VERSION, '5.4', '>=' ) ) {

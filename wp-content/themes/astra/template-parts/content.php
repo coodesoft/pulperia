@@ -12,17 +12,48 @@
 
 <?php astra_entry_before(); ?>
 
-<article itemtype="https://schema.org/CreativeWork" itemscope="itemscope" id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
-
+<article 
+	<?php
+		echo astra_attr(
+			'article-content',
+			array(
+				'id'    => 'post-' . get_the_id(),
+				'class' => join( ' ', get_post_class() ),
+			)
+		);
+		?>
+>
 	<?php astra_entry_top(); ?>
 
 	<header class="entry-header <?php astra_entry_header_class(); ?>">
 
-		<?php astra_the_title( sprintf( '<h2 class="entry-title" itemprop="headline"><a href="%s" rel="bookmark">', esc_url( get_permalink() ) ), '</a></h2>' ); ?>
+		<?php
+		astra_the_title(
+			sprintf(
+				'<h2 class="entry-title" ' . astra_attr(
+					'article-title-content',
+					array(
+						'class' => '',
+					)
+				) . '><a href="%s" rel="bookmark">',
+				esc_url( get_permalink() )
+			),
+			'</a></h2>'
+		);
+		?>
 
 	</header><!-- .entry-header -->
 
-	<div class="entry-content clear" itemprop="text">
+	<div class="entry-content clear"
+	<?php
+				echo astra_attr(
+					'article-entry-content',
+					array(
+						'class' => '',
+					)
+				);
+				?>
+	>
 
 		<?php astra_entry_content_before(); ?>
 

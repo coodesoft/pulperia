@@ -4,7 +4,7 @@
  *
  * @package     Astra
  * @author      Brainstorm Force
- * @copyright   Copyright (c) 2019, Brainstorm Force
+ * @copyright   Copyright (c) 2020, Brainstorm Force
  * @link        https://www.brainstormforce.com
  * @since       1.3.0
  */
@@ -54,7 +54,7 @@ if ( ! class_exists( 'Astra_Learndash_Container_Configs' ) ) {
 					'section'     => 'section-container-layout',
 					'default'     => astra_get_option( 'learndash-content-layout' ),
 					'priority'    => 68,
-					'title'       => __( 'Container for LearnDash', 'astra' ),
+					'title'       => __( 'LearnDash Layout', 'astra' ),
 					'description' => __( 'Will be applied to All Single Courses, Topics, Lessons and Quizzes. Does not work on pages created with LearnDash shortcodes.', 'astra' ),
 					'choices'     => array(
 						'default'                 => __( 'Default', 'astra' ),

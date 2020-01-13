@@ -12,11 +12,12 @@ html {
 /*----------  Site Basic Structure  ----------*/
 /*----------  z-index Structure   ----------*/
 /*
- * Button mixin- creates 3d-ish button effect with correct
+ * Button mixin- creates a button effect with correct
  * highlights/shadows, based on a base color.
  */
 .edit-post-visual-editor {
   /* must have higher specificity than alternative color schemes inline styles */
+  /* Default Astra Icons CSS */
 }
 
 .edit-post-visual-editor html {
@@ -405,6 +406,76 @@ html {
   font-family: "Open Sans", sans-serif;
 }
 
+.edit-post-visual-editor .astra-icon-down_arrow::after {
+  content: "\e900";
+  font-family: Astra;
+}
+
+.edit-post-visual-editor .astra-icon-close::after {
+  content: "\e5cd";
+  font-family: Astra;
+}
+
+.edit-post-visual-editor .astra-icon-drag_handle::after {
+  content: "\e25d";
+  font-family: Astra;
+}
+
+.edit-post-visual-editor .astra-icon-format_align_justify::after {
+  content: "\e235";
+  font-family: Astra;
+}
+
+.edit-post-visual-editor .astra-icon-menu::after {
+  content: "\e5d2";
+  font-family: Astra;
+}
+
+.edit-post-visual-editor .astra-icon-reorder::after {
+  content: "\e8fe";
+  font-family: Astra;
+}
+
+.edit-post-visual-editor .astra-icon-search::after {
+  content: "\e8b6";
+  font-family: Astra;
+}
+
+.edit-post-visual-editor .astra-icon-zoom_in::after {
+  content: "\e56b";
+  font-family: Astra;
+}
+
+.edit-post-visual-editor .astra-icon-check-circle::after {
+  content: "\e901";
+  font-family: Astra;
+}
+
+.edit-post-visual-editor .astra-icon-shopping-cart::after {
+  content: "\f07a";
+  font-family: Astra;
+}
+
+.edit-post-visual-editor .astra-icon-shopping-bag::after {
+  content: "\f290";
+  font-family: Astra;
+}
+
+.edit-post-visual-editor .astra-icon-shopping-basket::after {
+  content: "\f291";
+  font-family: Astra;
+}
+
+.edit-post-visual-editor .astra-icon-circle-o::after {
+  content: "\e903";
+  font-family: Astra;
+}
+
+.edit-post-visual-editor .astra-icon-certificate::after {
+  content: "\e902";
+  font-family: Astra;
+}
+
 .edit-post-visual-editor h1, .edit-post-visual-editor h2, .edit-post-visual-editor h3, .edit-post-visual-editor h4, .edit-post-visual-editor h5, .edit-post-visual-editor h6 {
   clear: both;
 }
@@ -507,13 +578,6 @@ html {
   margin-left: 0;
 }
 
-@media (min-width: 600px) {
-  .edit-post-visual-editor .editor-block-list__block .editor-block-list__block-edit {
-    padding-right: 28px;
-    padding-left: 28px;
-  }
-}
-
 .edit-post-visual-editor .editor-block-list__block > .editor-block-mover {
   right: -50px;
   top: -5px;
@@ -558,12 +622,20 @@ html {
   list-style: none;
 }
 
+.blocks-gallery-grid {
+  margin: 0;
+}
+
 .wp-block-gallery {
   margin: 0;
 }
 
 .wp-block-gallery.is-cropped .blocks-gallery-item img {
   height: 100%;
+}
+
+.edit-post-visual-editor .blocks-gallery-grid {
+  margin: 0;
 }
 
 .wp-block-latest-posts {
@@ -589,10 +661,8 @@ h6 {
 
 #elementor-editor-button {
   background: #0073aa;
-  border-color: #005177 #003f5e #003f5e;
+  border-color: #0073aa;
   color: #fff;
-  box-shadow: 0 1px 0 #003f5e;
-  text-shadow: 0 -1px 1px #003f5e, -1px 0 1px #003f5e, 0 1px 1px #003f5e, 1px 0 1px #003f5e;
   font-size: 14px;
   height: 46px;
   line-height: 44px;
@@ -609,34 +679,32 @@ h6 {
 
 #elementor-editor-button:hover, #elementor-editor-button:focus {
   background: #007db9;
-  border-color: #003f5e;
+  border-color: #00699b;
   color: #fff;
-  box-shadow: 0 1px 0 #003f5e;
 }
 
 #elementor-editor-button:focus {
-  box-shadow: inset 0 1px 0 #005177, 0 0 2px 1px #33b3db;
+  box-shadow: 0 0 0 1px #fff, 0 0 0 3px #0073aa;
 }
 
-#elementor-editor-button:active, #elementor-editor-button.active, #elementor-editor-button.active:focus, #elementor-editor-button.active:hover {
-  background: #005177;
+#elementor-editor-button:active {
+  background: #006291;
+  border-color: #006291;
+  color: #fff;
+}
+
+#elementor-editor-button.active, #elementor-editor-button.active:focus, #elementor-editor-button.active:hover {
+  background: #0073aa;
+  color: #fff;
   border-color: #003f5e;
-  box-shadow: inset 0 2px 0 #003f5e;
+  box-shadow: inset 0 2px 5px -3px black;
 }
 
 #elementor-editor-button[disabled], #elementor-editor-button:disabled, #elementor-editor-button.button-primary-disabled, #elementor-editor-button.disabled {
   color: #c7ced1 !important;
   background: #005781 !important;
-  border-color: #003f5e !important;
+  border-color: #005781 !important;
   text-shadow: none !important;
-}
-
-#elementor-editor-button.button-hero {
-  box-shadow: 0 2px 0 #003f5e !important;
-}
-
-#elementor-editor-button.button-hero:active {
-  box-shadow: inset 0 3px 0 #003f5e !important;
 }
 
 #elementor-editor-button i {
@@ -655,4 +723,117 @@ h6 {
 
 .ast-separate-container #wpwrap .edit-post-visual-editor {
   background-color: #f5f5f5;
+}
+
+/**
+ * Woocommerce Gutenberg Blocks Product Grid CSS Compatibility.
+ */
+.wc-block-grid .wc-block-grid__products .wc-block-grid__product {
+  text-align: right;
+  margin-bottom: 2.5em;
+}
+
+.wc-block-grid .wc-block-grid__products .wc-block-grid__product.product-category > a {
+  display: inline-block;
+  position: relative;
+}
+
+.wc-block-grid .wc-block-grid__products .wc-block-grid__product a img {
+  width: 100%;
+  height: auto;
+  display: block;
+  margin: 0 0 .8em 0;
+  box-shadow: none;
+}
+
+.wc-block-grid .wc-block-grid__products .wc-block-grid__product .wc-block-grid__product-title {
+  margin-bottom: .5em;
+  padding: 0;
+  font-size: 1em;
+  line-height: 1.2;
+  font-weight: inherit;
+}
+
+.wc-block-grid .wc-block-grid__products .wc-block-grid__product .star-rating {
+  margin: 0 0 .5em auto;
+  backface-visibility: hidden;
+}
+
+.wc-block-grid .wc-block-grid__products .wc-block-grid__product .woocommerce-loop-product__link {
+  position: relative;
+  display: block;
+}
+
+.wc-block-grid .wc-block-grid__products .wc-block-grid__product .woocommerce-loop-product__link:hover .ast-shop-product-out-of-stock {
+  background-color: white;
+}
+
+.wc-block-grid .wc-block-grid__products .wc-block-grid__product.product-category > a:hover .woocommerce-loop-category__title {
+  background-color: white;
+}
+
+.wc-block-grid .wc-block-grid__products .wc-block-grid__product .woocommerce-loop-category__title {
+  bottom: 1.8em;
+  font-size: 0.9em;
+}
+
+.wc-block-grid .wc-block-grid__products .wc-block-grid__product .woocommerce-loop-category__title .count {
+  font-size: .7em;
+}
+
+.wc-block-grid .wc-block-grid__products .wc-block-grid__product .price {
+  line-height: 1.3;
+  margin-bottom: 0;
+  font-weight: 700;
+  margin-bottom: .5em;
+  font-size: .9em;
+}
+
+.wc-block-grid .wc-block-grid__products .wc-block-grid__product .price del {
+  display: initial;
+}
+
+.wc-block-grid .wc-block-grid__products .wc-block-grid__product .wp-block-button__link {
+  margin-top: .5em;
+  margin-bottom: .5em;
+  white-space: normal;
+  line-height: 1.3;
+  font-size: 100%;
+  font-weight: 700;
+}
+
+.wc-block-grid .wc-block-grid__products .wc-block-grid__product .wp-block-button__link.added {
+  margin-bottom: 0;
+  transition: margin 0s;
+}
+
+.wc-block-grid .wc-block-grid__products .wc-block-grid__product .woocommerce-loop-category__title {
+  text-transform: uppercase;
+  font-weight: bold;
+  line-height: 1.5;
+}
+
+.wc-block-grid .wc-block-grid__products .wc-block-grid__product .woocommerce-loop-category__title .count {
+  display: block;
+  background: none;
+  opacity: .5;
+  font-size: .75em;
+}
+
+.wc-block-grid .wc-block-grid__products .wc-block-grid__product .wc-block-grid__product-onsale {
+  min-width: 3em;
+  min-height: 3em;
+  line-height: 3em;
+  padding: 0;
+  font-size: 1em;
+  font-weight: normal;
+  text-transform: capitalize;
+  position: absolute;
+  text-align: center;
+  border-radius: 100%;
+  z-index: 9;
+  top: 0;
+  left: 15px;
+  right: auto;
+  margin: -0.5em 0 0 -0.5em;
 }

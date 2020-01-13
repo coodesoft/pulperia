@@ -112,14 +112,50 @@
 }
 
 .customize-pane-child > li[id="customize-control-astra-settings-headings-font-weight"],
-.customize-pane-child > li[id="customize-control-astra-settings-body-font-weight"] {
+.customize-pane-child > li[id="customize-control-astra-settings-body-font-weight"],
+.customize-pane-child > li[id*="-font-weight"] {
     padding-left: 5px;
 }
 
 .customize-pane-child > li[id="customize-control-astra-settings-headings-text-transform"],
-.customize-pane-child > li[id="customize-control-astra-settings-body-text-transform"] {
+.customize-pane-child > li[id="customize-control-astra-settings-body-text-transform"],
+.customize-pane-child > li[id*="-text-transform"] {
     padding-right: 5px;
 }
+
+/* WP Beta 5.3 compatibility CSS - Start */
+
+.customize-control select.ast-responsive-select {
+	height: 30px;
+}
+
+.customize-control input[type="number"] {
+	min-height: 30px;
+}
+
+.customize-control input[type="text"].select2-search__field {
+	line-height: 1;
+	border-radius: 0;
+}
+
+.customize-control .wp-picker-container button,
+.customize-control .wp-picker-container .wp-color-picker {
+	min-height: 24px;
+}
+
+.customize-control .wp-picker-container .wp-color-picker {
+	padding: 3px 5px;
+	width: 71px !important;
+	line-height: 17px;
+}
+
+.customize-control input[type="number"].ast-spacing-input,
+.customize-control input.ast-border-input {
+	min-height: 28px;
+	border-radius: 0;
+}
+
+/* WP Beta 5.3 compatibility CSS - Start */
 
 .customize-pane-child > li[id$="-content-layout"] > label,
 .customize-pane-child > li[id$="-sidebar-layout"] > label {
@@ -137,6 +173,13 @@
 .customize-pane-child > li[id$="-content-layout"] > label select,
 .customize-pane-child > li[id$="-sidebar-layout"] > label select {
     margin-right: 10px;
+}
+
+.customize-pane-child > li[id*="-font-weight"], .customize-pane-child > li[id*="-text-transform"] {
+    width: 50%;
+    display: inline-block;
+    box-sizing: border-box;
+    clear: none;
 }
 
 /**
@@ -184,4 +227,19 @@
 /* Primary Sub Menu Item Border */
 #customize-control-astra-settings-primary-submenu-item-border .ast-border-wrapper{
 	width: 100%;
+}
+
+.actions .button.upload-button {
+	text-transform: capitalize;
+}
+
+.wp-picker-container .iris-square-handle {
+	z-index: 8;
+}
+
+/* Site Identity */
+#customize-control-custom_logo .attachment-media-view .button-add-media,
+#customize-control-site_icon .attachment-media-view .placeholder,
+#customize-control-astra-settings-transparent-header-logo .attachment-media-view .button-add-media {
+	text-transform: capitalize;
 }

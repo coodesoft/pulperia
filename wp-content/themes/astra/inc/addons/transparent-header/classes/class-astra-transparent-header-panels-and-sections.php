@@ -4,7 +4,7 @@
  *
  * @package     Astra Addon
  * @author      Brainstorm Force
- * @copyright   Copyright (c) 2019, Brainstorm Force
+ * @copyright   Copyright (c) 2020, Brainstorm Force
  * @link        https://www.brainstormforce.com
  * @since       Astra 1.4.3
  */
@@ -46,9 +46,8 @@ if ( ! class_exists( 'Astra_Transparent_Header_Panels_And_Sections' ) ) {
 				array(
 					'name'     => 'section-transparent-header',
 					'title'    => __( 'Transparent Header', 'astra' ),
-					'panel'    => 'panel-layout',
+					'panel'    => 'panel-header-group',
 					'type'     => 'section',
-					'section'  => 'section-header-group',
 					'priority' => 33,
 				),
 
@@ -58,15 +57,6 @@ if ( ! class_exists( 'Astra_Transparent_Header_Panels_And_Sections' ) ) {
 					'title'    => __( 'Header', 'astra' ),
 					'panel'    => 'panel-colors-background',
 					'priority' => 20,
-				),
-
-				array(
-					'name'     => 'section-colors-transparent-header',
-					'title'    => __( 'Transparent Header', 'astra' ),
-					'type'     => 'section',
-					'panel'    => 'panel-colors-background',
-					'section'  => 'section-colors-header-group',
-					'priority' => 32,
 				),
 			);
 

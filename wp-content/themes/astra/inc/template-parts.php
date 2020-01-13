@@ -4,10 +4,14 @@
  *
  * @package     Astra
  * @author      Astra
- * @copyright   Copyright (c) 2019, Astra
+ * @copyright   Copyright (c) 2020, Astra
  * @link        https://wpastra.com/
  * @since       Astra 1.0.0
  */
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
 
 add_action( 'astra_masthead_toggle_buttons', 'astra_masthead_toggle_buttons_primary' );
 add_action( 'astra_masthead', 'astra_masthead_primary_template' );
@@ -278,7 +282,7 @@ if ( ! function_exists( 'astra_entry_content_blog_template' ) ) {
 	 * @since 1.0.0
 	 */
 	function astra_entry_content_blog_template() {
-		get_template_part( 'template-parts/blog/blog-layout' );
+		get_template_part( 'template-parts/blog/blog-layout', apply_filters( 'astra_blog_template_name', '' ) );
 	}
 }
 

@@ -4,7 +4,7 @@
  *
  * @package     Astra
  * @author      Brainstorm Force
- * @copyright   Copyright (c) 2019, Brainstorm Force
+ * @copyright   Copyright (c) 2020, Brainstorm Force
  * @link        https://www.brainstormforce.com
  * @since       Astra 1.0
  */
@@ -33,6 +33,18 @@ if ( ! class_exists( 'Astra_Woo_Shop_Container_Configs' ) ) {
 			$_configs = array(
 
 				/**
+				 * Option: Divider
+				 */
+				array(
+					'name'     => ASTRA_THEME_SETTINGS . '[woocommerce-content-divider]',
+					'type'     => 'control',
+					'section'  => 'section-container-layout',
+					'control'  => 'ast-divider',
+					'priority' => 85,
+					'settings' => array(),
+				),
+
+				/**
 				 * Option: Shop Page
 				 */
 				array(
@@ -42,7 +54,7 @@ if ( ! class_exists( 'Astra_Woo_Shop_Container_Configs' ) ) {
 					'default'  => astra_get_option( 'woocommerce-content-layout' ),
 					'section'  => 'section-container-layout',
 					'priority' => 85,
-					'title'    => __( 'Container for WooCommerce', 'astra' ),
+					'title'    => __( 'WooCommerce Layout', 'astra' ),
 					'choices'  => array(
 						'default'                 => __( 'Default', 'astra' ),
 						'boxed-container'         => __( 'Boxed', 'astra' ),

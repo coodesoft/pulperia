@@ -4,7 +4,7 @@
  *
  * @package     Astra
  * @author      Brainstorm Force
- * @copyright   Copyright (c) 2019, Brainstorm Force
+ * @copyright   Copyright (c) 2020, Brainstorm Force
  * @link        https://www.brainstormforce.com
  * @since       Astra 1.7.0
  */
@@ -48,7 +48,6 @@ if ( ! class_exists( 'Astra_Breadcrumbs_Configs' ) ) {
 					'type'               => 'section',
 					'priority'           => 20,
 					'title'              => __( 'Breadcrumb', 'astra' ),
-					'panel'              => 'panel-layout',
 					'description_hidden' => true,
 					'description'        => $this->section_get_description(
 						array(
@@ -72,7 +71,7 @@ if ( ! class_exists( 'Astra_Breadcrumbs_Configs' ) ) {
 					'name'     => ASTRA_THEME_SETTINGS . '[breadcrumb-position]',
 					'default'  => 'none',
 					'section'  => 'section-breadcrumb',
-					'title'    => __( 'Breadcrumb Position', 'astra' ),
+					'title'    => __( 'Position', 'astra' ),
 					'type'     => 'control',
 					'control'  => 'select',
 					'priority' => 5,
@@ -111,7 +110,7 @@ if ( ! class_exists( 'Astra_Breadcrumbs_Configs' ) ) {
 					'default'         => astra_get_option( 'breadcrumb-separator' ) ? astra_get_option( 'breadcrumb-separator' ) : '»',
 					'required'        => array( ASTRA_THEME_SETTINGS . '[breadcrumb-position]', '!=', 'none' ),
 					'priority'        => 15,
-					'title'           => __( 'Breadcrumb Separator', 'astra' ),
+					'title'           => __( 'Separator', 'astra' ),
 					'active_callback' => array( $this, 'is_selected_breadcrumb_active' ),
 				),
 
@@ -137,7 +136,7 @@ if ( ! class_exists( 'Astra_Breadcrumbs_Configs' ) ) {
 					'default'     => astra_get_option( 'breadcrumb-disable-blog-posts-page' ),
 					'type'        => 'control',
 					'section'     => 'section-breadcrumb',
-					'description' => __( 'Latest Posts Page or when any page is selected as Blog Page', 'astra' ),
+					'description' => __( 'Latest posts page or when any page is selected as blog page', 'astra' ),
 					'required'    => array( ASTRA_THEME_SETTINGS . '[breadcrumb-position]', '!=', 'none' ),
 					'title'       => __( 'Disable on Blog / Posts Page?', 'astra' ),
 					'priority'    => 25,
@@ -233,15 +232,16 @@ if ( ! class_exists( 'Astra_Breadcrumbs_Configs' ) ) {
 				 * Option: Breadcrumb Alignment
 				 */
 				array(
-					'name'     => ASTRA_THEME_SETTINGS . '[breadcrumb-alignment]',
-					'default'  => 'left',
-					'section'  => 'section-breadcrumb',
-					'required' => array( ASTRA_THEME_SETTINGS . '[breadcrumb-position]', '!=', 'none' ),
-					'title'    => __( 'Breadcrumb Alignment', 'astra' ),
-					'type'     => 'control',
-					'control'  => 'select',
-					'priority' => 60,
-					'choices'  => array(
+					'name'      => ASTRA_THEME_SETTINGS . '[breadcrumb-alignment]',
+					'default'   => 'left',
+					'section'   => 'section-breadcrumb',
+					'transport' => 'postMessage',
+					'required'  => array( ASTRA_THEME_SETTINGS . '[breadcrumb-position]', '!=', 'none' ),
+					'title'     => __( 'Alignment', 'astra' ),
+					'type'      => 'control',
+					'control'   => 'select',
+					'priority'  => 65,
+					'choices'   => array(
 						'left'   => __( 'Left', 'astra' ),
 						'center' => __( 'Center', 'astra' ),
 						'right'  => __( 'Right', 'astra' ),
@@ -257,8 +257,8 @@ if ( ! class_exists( 'Astra_Breadcrumbs_Configs' ) ) {
 					'type'           => 'control',
 					'transport'      => 'postMessage',
 					'control'        => 'ast-responsive-spacing',
-					'priority'       => 65,
-					'title'          => __( 'Breadcrumb Spacing', 'astra' ),
+					'priority'       => 70,
+					'title'          => __( 'Spacing', 'astra' ),
 					'linked_choices' => true,
 					'unit_choices'   => array( 'px', 'em', '%' ),
 					'choices'        => array(

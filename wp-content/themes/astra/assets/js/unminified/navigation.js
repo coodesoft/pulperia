@@ -100,7 +100,8 @@ var astraTriggerEvent = function astraTriggerEvent( el, typeArg ) {
 
 ( function() {
 
-	var menu_toggle_all 	= document.querySelectorAll( '.main-header-menu-toggle' );
+	var menu_toggle_all 	 = document.querySelectorAll( '.main-header-menu-toggle' );
+	var menu_click_listeners = {};
 
 	/* Add break point Class and related trigger */
 	var updateHeaderBreakPoint = function () {
@@ -207,7 +208,10 @@ var astraTriggerEvent = function astraTriggerEvent( el, typeArg ) {
 
 				menu_toggle_all[i].setAttribute('data-index', i);
 
-				menu_toggle_all[i].addEventListener('click', astraNavMenuToggle, false);
+				if ( ! menu_click_listeners[i] ) {
+					menu_click_listeners[i] = menu_toggle_all[i];
+					menu_toggle_all[i].addEventListener('click', astraNavMenuToggle, false);
+				}
 
 				if ('undefined' !== typeof __main_header_all[i]) {
 
@@ -294,8 +298,11 @@ var astraTriggerEvent = function astraTriggerEvent( el, typeArg ) {
 	}, false);
 
 	window.addEventListener('resize', function () {
-		updateHeaderBreakPoint();
-		AstraToggleSetup();
+		// Skip resize event when keyboard display event triggers on devices. 
+		if( 'INPUT' !== document.activeElement.tagName ) {
+			updateHeaderBreakPoint();
+			AstraToggleSetup();
+		}
 	});
 
 	document.addEventListener('DOMContentLoaded', function () {
@@ -367,13 +374,15 @@ var astraTriggerEvent = function astraTriggerEvent( el, typeArg ) {
 
 	/* Hide Dropdown on body click*/
 	document.body.onclick = function( event ) {
-		if ( ! event.target.classList.contains( 'ast-search-menu-icon' ) && getParents( event.target, '.ast-search-menu-icon' ).length === 0 && getParents( event.target, '.ast-search-icon' ).length === 0  ) {
-            var dropdownSearchWrap = document.getElementsByClassName( 'ast-search-menu-icon' );
-            
-            for (var i = 0; i < dropdownSearchWrap.length; i++) {
-                dropdownSearchWrap[i].classList.remove( 'ast-dropdown-active' );
-            };
-        }
+		if ( typeof event.target.classList !==  'undefined' ) {
+			if ( ! event.target.classList.contains( 'ast-search-menu-icon' ) && getParents( event.target, '.ast-search-menu-icon' ).length === 0 && getParents( event.target, '.ast-search-icon' ).length === 0  ) {
+				var dropdownSearchWrap = document.getElementsByClassName( 'ast-search-menu-icon' );
+				
+				for (var i = 0; i < dropdownSearchWrap.length; i++) {
+					dropdownSearchWrap[i].classList.remove( 'ast-dropdown-active' );
+				};
+			}
+		}	
 	}
 	
 	/**

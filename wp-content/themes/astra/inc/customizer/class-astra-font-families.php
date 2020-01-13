@@ -4,7 +4,7 @@
  *
  * @package     Astra
  * @author      Astra
- * @copyright   Copyright (c) 2019, Astra
+ * @copyright   Copyright (c) 2020, Astra
  * @link        https://wpastra.com/
  * @since       Astra 1.0.19
  */
@@ -135,13 +135,7 @@ if ( ! class_exists( 'Astra_Font_Families' ) ) :
 					return array();
 				}
 
-				global $wp_filesystem;
-				if ( empty( $wp_filesystem ) ) {
-					require_once ABSPATH . '/wp-admin/includes/file.php';
-					WP_Filesystem();
-				}
-
-				$file_contants     = $wp_filesystem->get_contents( $google_fonts_file );
+				$file_contants     = astra_filesystem()->get_contents( $google_fonts_file );
 				$google_fonts_json = json_decode( $file_contants, 1 );
 
 				foreach ( $google_fonts_json as $key => $font ) {

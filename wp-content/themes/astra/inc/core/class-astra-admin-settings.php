@@ -6,7 +6,7 @@
  *
  * @package     Astra
  * @author      Astra
- * @copyright   Copyright (c) 2019, Astra
+ * @copyright   Copyright (c) 2020, Astra
  * @link        https://wpastra.com/
  * @since       Astra 1.0
  */
@@ -88,9 +88,9 @@ if ( ! class_exists( 'Astra_Admin_Settings' ) ) {
 		public static function init_admin_settings() {
 			self::$menu_page_title = apply_filters( 'astra_menu_page_title', __( 'Astra Options', 'astra' ) );
 			self::$page_title      = apply_filters( 'astra_page_title', __( 'Astra', 'astra' ) );
-			self::$plugin_slug     = apply_filters( 'astra_theme_page_slug', self::$plugin_slug );
+			self::$plugin_slug     = self::get_theme_page_slug();
 
-			add_action( 'admin_enqueue_scripts', __class__ . '::register_scripts' );
+			add_action( 'admin_enqueue_scripts', __CLASS__ . '::register_scripts' );
 
 			if ( isset( $_REQUEST['page'] ) && strpos( $_REQUEST['page'], self::$plugin_slug ) !== false ) {
 
@@ -101,8 +101,6 @@ if ( ! class_exists( 'Astra_Admin_Settings' ) ) {
 
 				self::save_settings();
 			}
-
-			add_action( 'admin_enqueue_scripts', __CLASS__ . '::admin_scripts' );
 
 			add_action( 'customize_controls_enqueue_scripts', __CLASS__ . '::customizer_scripts' );
 
@@ -125,6 +123,20 @@ if ( ! class_exists( 'Astra_Admin_Settings' ) ) {
 			add_action( 'wp_ajax_astra-sites-plugin-deactivate', __CLASS__ . '::required_plugin_deactivate' );
 
 			add_action( 'admin_notices', __CLASS__ . '::register_notices' );
+			add_action( 'astra_notice_before_markup', __CLASS__ . '::notice_assets' );
+
+			add_action( 'admin_notices', __CLASS__ . '::minimum_addon_version_notice' );
+
+		}
+
+		/**
+		 * Theme options page Slug getter including White Label string.
+		 *
+		 * @since 2.1.0
+		 * @return string Theme Options Page Slug.
+		 */
+		public static function get_theme_page_slug() {
+			return apply_filters( 'astra_theme_page_slug', self::$plugin_slug );
 		}
 
 		/**
@@ -210,7 +222,7 @@ if ( ! class_exists( 'Astra_Admin_Settings' ) ) {
 
 				$astra_sites_notice_args = array(
 					'id'                         => 'astra-sites-on-active',
-					'type'                       => '',
+					'type'                       => 'info',
 					'message'                    => sprintf(
 						'<div class="notice-image">
 							<img src="%1$s" class="custom-logo" alt="Astra" itemprop="logo"></div> 
@@ -243,20 +255,55 @@ if ( ! class_exists( 'Astra_Admin_Settings' ) ) {
 				Astra_Notices::add_notice(
 					$astra_sites_notice_args
 				);
-
-				// Enqueue Install Plugin JS here to resolve conflict with Upload Theme button.
-				add_action( "astra_notice_before_markup_{$astra_sites_notice_args['id']}", __CLASS__ . '::enqueue_plugin_install_js' );
 			}
 		}
 
 		/**
-		 * Enqueue plugin install JS in Notices
+		 * Display notice for minimun version for Astra addon.
 		 *
-		 * @since 1.7.2
+		 * @since 2.0.0
+		 */
+		public static function minimum_addon_version_notice() {
+
+			if ( ! defined( 'ASTRA_EXT_VER' ) ) {
+				return;
+			}
+
+			$astra_theme_name = astra_get_theme_name();
+			$astra_addon_name = astra_get_addon_name();
+
+			$notice_args = array(
+				'id'             => 'ast-minimum-addon-version-notice',
+				'type'           => '',
+				'message'        => sprintf(
+					/* translators: %1$1s: Theme Name, %2$2s: Minimum Required version of the addon */
+					__( 'Glad to see you have updated the %1$1s! Please update the %2$2s to version %3$3s or higher.', 'astra' ),
+					$astra_theme_name,
+					$astra_addon_name,
+					ASTRA_EXT_MIN_VER
+				),
+				'priority'       => 1,
+				'type'           => 'warning',
+				'show_if'        => version_compare( ASTRA_EXT_VER, ASTRA_EXT_MIN_VER ) < 0,
+				'is_dismissible' => false,
+			);
+
+			Astra_Notices::add_notice( $notice_args );
+		}
+
+		/**
+		 * Enqueue Astra Notices CSS.
+		 *
+		 * @since 2.0.0
+		 *
 		 * @return void
 		 */
-		public static function enqueue_plugin_install_js() {
-			wp_enqueue_script( 'plugin-install' );
+		public static function notice_assets() {
+			if ( is_rtl() ) {
+				wp_enqueue_style( 'astra-notices-rtl', ASTRA_THEME_URI . 'inc/assets/css/astra-notices-rtl.css', array(), ASTRA_THEME_VERSION );
+			} else {
+				wp_enqueue_style( 'astra-notices', ASTRA_THEME_URI . 'inc/assets/css/astra-notices.css', array(), ASTRA_THEME_VERSION );
+			}
 		}
 
 		/**
@@ -331,24 +378,27 @@ if ( ! class_exists( 'Astra_Admin_Settings' ) ) {
 		}
 
 		/**
-		 * Enqueues the needed CSS/JS for Backend.
+		 * Register admin scripts.
 		 *
-		 * @since 1.0
+		 * @param String $hook Screen name where the hook is fired.
+		 * @return void
 		 */
-		public static function admin_scripts() {
-
-			// Styles.
-			if ( is_rtl() ) {
-				wp_enqueue_style( 'astra-admin-rtl', ASTRA_THEME_URI . 'inc/assets/css/astra-admin-rtl.css', array(), ASTRA_THEME_VERSION );
-			} else {
-				wp_enqueue_style( 'astra-admin', ASTRA_THEME_URI . 'inc/assets/css/astra-admin.css', array(), ASTRA_THEME_VERSION );
+		public static function register_scripts( $hook ) {
+			$js_prefix  = '.min.js';
+			$css_prefix = '.min.css';
+			$dir        = 'minified';
+			if ( SCRIPT_DEBUG ) {
+				$js_prefix  = '.js';
+				$css_prefix = '.css';
+				$dir        = 'unminified';
 			}
 
-			/* Directory and Extension */
-			$file_prefix = ( SCRIPT_DEBUG ) ? '' : '.min';
-			$dir_name    = ( SCRIPT_DEBUG ) ? 'unminified' : 'minified';
-
-			$assets_js_uri = ASTRA_THEME_URI . 'assets/js/' . $dir_name . '/';
+			if ( is_rtl() ) {
+				$css_prefix = '-rtl.min.css';
+				if ( SCRIPT_DEBUG ) {
+					$css_prefix = '-rtl.css';
+				}
+			}
 
 			/**
 			 * Filters the Admin JavaScript handles added
@@ -358,38 +408,64 @@ if ( ! class_exists( 'Astra_Admin_Settings' ) ) {
 			 * @param array array of the javascript handles.
 			 */
 			$js_handle = apply_filters( 'astra_admin_script_handles', array( 'jquery', 'wp-color-picker' ) );
+
 			// Add customize-base handle only for the Customizer Preview Screen.
 			if ( true === is_customize_preview() ) {
 				$js_handle[] = 'customize-base';
 			}
 
-			wp_enqueue_script( 'astra-color-alpha', $assets_js_uri . 'wp-color-picker-alpha' . $file_prefix . '.js', $js_handle, ASTRA_THEME_VERSION, true );
+			wp_register_script( 'astra-color-alpha', ASTRA_THEME_URI . 'assets/js/' . $dir . '/wp-color-picker-alpha' . $js_prefix, $js_handle, ASTRA_THEME_VERSION, true );
 
-			wp_enqueue_script( 'thickbox' );
-			wp_enqueue_style( 'thickbox' );
-		}
+			if ( in_array( $hook, array( 'post.php', 'post-new.php' ) ) ) {
+				$post_types = get_post_types( array( 'public' => true ) );
+				$screen     = get_current_screen();
+				$post_type  = $screen->id;
 
-		/**
-		 * Reegister Scripts and styles for Astra Admin.
-		 *
-		 * @since 1.6.9
-		 * @return void
-		 */
-		public static function register_scripts() {
-			wp_register_script( 'astra-admin-settings', ASTRA_THEME_URI . 'inc/assets/js/astra-admin-menu-settings.js', array( 'jquery', 'wp-util', 'updates' ), ASTRA_THEME_VERSION );
+				if ( in_array( $post_type, (array) $post_types ) ) {
+					echo '<style class="astra-meta-box-style">
+						.block-editor-page #side-sortables #astra_settings_meta_box select { min-width: 84%; padding: 3px 24px 3px 8px; height: 20px; min-height: 20px; }
+						.block-editor-page #normal-sortables #astra_settings_meta_box select { min-width: 200px; }
+						.block-editor-page .edit-post-meta-boxes-area #poststuff #astra_settings_meta_box h2.hndle { border-bottom: 0; }
+						.block-editor-page #astra_settings_meta_box .components-base-control__field, .block-editor-page #astra_settings_meta_box .block-editor-page .transparent-header-wrapper, .block-editor-page #astra_settings_meta_box .adv-header-wrapper, .block-editor-page #astra_settings_meta_box .stick-header-wrapper, .block-editor-page #astra_settings_meta_box .disable-section-meta div { margin-bottom: 8px; }
+						.block-editor-page #astra_settings_meta_box .disable-section-meta div label { vertical-align: inherit; }
+						.block-editor-page #astra_settings_meta_box .post-attributes-label-wrapper { margin-bottom: 4px; }
+						#side-sortables #astra_settings_meta_box select { min-width: 100%; }
+						#normal-sortables #astra_settings_meta_box select { min-width: 200px; }
+					</style>';
+				}
+			}
+			/* Add CSS for the Submenu for BSF plugins added in Appearance Menu */
 
-			$localize = array(
-				'ajaxUrl'                            => admin_url( 'admin-ajax.php' ),
-				'btnActivating'                      => __( 'Activating Importer Plugin ', 'astra' ) . '&hellip;',
-				'astraSitesLink'                     => admin_url( 'themes.php?page=astra-sites' ),
-				'astraSitesLinkTitle'                => __( 'See Library »', 'astra' ),
-				'recommendedPluiginActivatingText'   => __( 'Activating', 'astra' ) . '&hellip;',
-				'recommendedPluiginDeactivatingText' => __( 'Deactivating', 'astra' ) . '&hellip;',
-				'recommendedPluiginActivateText'     => __( 'Activate', 'astra' ),
-				'recommendedPluiginDeactivateText'   => __( 'Deactivate', 'astra' ),
-				'recommendedPluiginSettingsText'     => __( 'Settings', 'astra' ),
-			);
-			wp_localize_script( 'astra-admin-settings', 'astra', apply_filters( 'astra_theme_js_localize', $localize ) );
+			if ( ! is_customize_preview() ) {
+				echo '<style class="astra-menu-appearance-style">
+					#menu-appearance a[href^="edit.php?post_type=astra-"]:before,
+					#menu-appearance a[href^="themes.php?page=astra-"]:before,
+					#menu-appearance a[href^="edit.php?post_type=astra_"]:before,
+					#menu-appearance a[href^="edit-tags.php?taxonomy=bsf_custom_fonts"]:before,
+					#menu-appearance a[href^="themes.php?page=custom-typekit-fonts"]:before,
+					#menu-appearance a[href^="edit.php?post_type=bsf-sidebar"]:before {
+					    content: "\21B3";
+					    margin-right: 0.5em;
+					    opacity: 0.5;
+					}
+				</style>';
+
+				wp_register_script( 'astra-admin-settings', ASTRA_THEME_URI . 'inc/assets/js/astra-admin-menu-settings.js', array( 'jquery', 'wp-util', 'updates' ), ASTRA_THEME_VERSION );
+
+				$localize = array(
+					'ajaxUrl'                            => admin_url( 'admin-ajax.php' ),
+					'btnActivating'                      => __( 'Activating Importer Plugin ', 'astra' ) . '&hellip;',
+					'astraSitesLink'                     => admin_url( 'themes.php?page=astra-sites' ),
+					'astraSitesLinkTitle'                => __( 'See Library »', 'astra' ),
+					'recommendedPluiginActivatingText'   => __( 'Activating', 'astra' ) . '&hellip;',
+					'recommendedPluiginDeactivatingText' => __( 'Deactivating', 'astra' ) . '&hellip;',
+					'recommendedPluiginActivateText'     => __( 'Activate', 'astra' ),
+					'recommendedPluiginDeactivateText'   => __( 'Deactivate', 'astra' ),
+					'recommendedPluiginSettingsText'     => __( 'Settings', 'astra' ),
+				);
+
+				wp_localize_script( 'astra-admin-settings', 'astra', apply_filters( 'astra_theme_js_localize', $localize ) );
+			}
 		}
 
 		/**
@@ -406,8 +482,31 @@ if ( ! class_exists( 'Astra_Admin_Settings' ) ) {
 				wp_enqueue_style( 'astra-admin-settings', ASTRA_THEME_URI . 'inc/assets/css/astra-admin-menu-settings.css', array(), ASTRA_THEME_VERSION );
 			}
 
+			wp_register_script( 'astra-admin-settings', ASTRA_THEME_URI . 'inc/assets/js/astra-admin-menu-settings.js', array( 'jquery', 'wp-util', 'updates' ), ASTRA_THEME_VERSION );
+
+			$localize = array(
+				'ajaxUrl'                            => admin_url( 'admin-ajax.php' ),
+				'btnActivating'                      => __( 'Activating Importer Plugin ', 'astra' ) . '&hellip;',
+				'astraSitesLink'                     => admin_url( 'themes.php?page=astra-sites' ),
+				'astraSitesLinkTitle'                => __( 'See Library »', 'astra' ),
+				'recommendedPluiginActivatingText'   => __( 'Activating', 'astra' ) . '&hellip;',
+				'recommendedPluiginDeactivatingText' => __( 'Deactivating', 'astra' ) . '&hellip;',
+				'recommendedPluiginActivateText'     => __( 'Activate', 'astra' ),
+				'recommendedPluiginDeactivateText'   => __( 'Deactivate', 'astra' ),
+				'recommendedPluiginSettingsText'     => __( 'Settings', 'astra' ),
+
+			);
+			wp_localize_script( 'astra-admin-settings', 'astra', apply_filters( 'astra_theme_js_localize', $localize ) );
+
 			// Script.
 			wp_enqueue_script( 'astra-admin-settings' );
+
+			if ( ! file_exists( WP_PLUGIN_DIR . '/astra-sites/astra-sites.php' ) && is_plugin_inactive( 'astra-pro-sites/astra-pro-sites.php' ) ) {
+				// For starter site plugin popup detail "Details »" on Astra Options page.
+				wp_enqueue_script( 'plugin-install' );
+				wp_enqueue_script( 'thickbox' );
+				wp_enqueue_style( 'thickbox' );
+			}
 		}
 
 
@@ -525,7 +624,7 @@ if ( ! class_exists( 'Astra_Admin_Settings' ) ) {
 				<div class="inside">
 					<p>
 						<?php
-							$astra_starter_sites_doc_link      = apply_filters( 'astra_starter_sites_documentation_link', astra_get_pro_url( 'https://wpastra.com/ready-websites/installing-importing-astra-sites/', 'astra-dashboard', 'how-astra-sites-works', 'welcome-page' ) );
+							$astra_starter_sites_doc_link      = apply_filters( 'astra_starter_sites_documentation_link', astra_get_pro_url( 'https://wpastra.com/docs/installing-importing-astra-sites', 'astra-dashboard', 'how-astra-sites-works', 'welcome-page' ) );
 							$astra_starter_sites_doc_link_text = apply_filters( 'astra_starter_sites_doc_link_text', __( 'Starter Site Templates?', 'astra' ) );
 							printf(
 								/* translators: %1$s: Starter site link. */
@@ -724,22 +823,22 @@ if ( ! class_exists( 'Astra_Admin_Settings' ) ) {
 					'colors'       => array(
 						'title'     => __( 'Set Colors', 'astra' ),
 						'dashicon'  => 'dashicons-admin-customizer',
-						'quick_url' => admin_url( 'customize.php?autofocus[panel]=panel-colors-background' ),
+						'quick_url' => admin_url( 'customize.php?autofocus[section]=section-colors-background' ),
 					),
 					'typography'   => array(
 						'title'     => __( 'Customize Fonts', 'astra' ),
 						'dashicon'  => 'dashicons-editor-textcolor',
-						'quick_url' => admin_url( 'customize.php?autofocus[panel]=panel-typography' ),
+						'quick_url' => admin_url( 'customize.php?autofocus[section]=section-typography' ),
 					),
 					'layout'       => array(
 						'title'     => __( 'Layout Options', 'astra' ),
 						'dashicon'  => 'dashicons-layout',
-						'quick_url' => admin_url( 'customize.php?autofocus[panel]=panel-layout' ),
+						'quick_url' => admin_url( 'customize.php?autofocus[section]=section-container-layout' ),
 					),
 					'header'       => array(
 						'title'     => __( 'Header Options', 'astra' ),
 						'dashicon'  => 'dashicons-align-center',
-						'quick_url' => admin_url( 'customize.php?autofocus[section]=section-header' ),
+						'quick_url' => admin_url( 'customize.php?autofocus[panel]=panel-header-group' ),
 					),
 					'blog-layout'  => array(
 						'title'     => __( 'Blog Layouts', 'astra' ),

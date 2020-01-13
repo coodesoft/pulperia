@@ -31,7 +31,6 @@
 			$( document ).on('wp-plugin-install-success' , AstraThemeAdmin._activatePlugin);
 			$( document ).on('wp-plugin-install-error'   , AstraThemeAdmin._installError);
 			$( document ).on('wp-plugin-installing'      , AstraThemeAdmin._pluginInstalling);
-
 		},
 
 		/**
@@ -245,6 +244,7 @@
 			}
 
 		},
+
 	};
 
 	/**

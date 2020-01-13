@@ -4775,7 +4775,7 @@ function _doing_it_wrong( $function, $message, $version ) {
 				__( 'https://codex.wordpress.org/Debugging_in_WordPress' )
 			);
 			/* translators: Developer debugging message. 1: PHP function name, 2: Explanatory message, 3: Version information message */
-			trigger_error( sprintf( __( '%1$s was called <strong>incorrectly</strong>. %2$s %3$s' ), $function, $message, $version ) );
+			//trigger_error( sprintf( __( '%1$s was called <strong>incorrectly</strong>. %2$s %3$s' ), $function, $message, $version ) );
 		} else {
 			if ( is_null( $version ) ) {
 				$version = '';

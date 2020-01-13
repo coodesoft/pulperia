@@ -4,10 +4,14 @@
  *
  * @package     Astra
  * @author      Brainstorm Force
- * @copyright   Copyright (c) 2019, Brainstorm Force
+ * @copyright   Copyright (c) 2020, Brainstorm Force
  * @link        https://www.brainstormforce.com
  * @since       Astra 1.7.0
  */
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
 
 define( 'ASTRA_THEME_BREADCRUMBS_DIR', ASTRA_THEME_DIR . 'inc/addons/breadcrumbs/' );
 define( 'ASTRA_THEME_BREADCRUMBS_URI', ASTRA_THEME_URI . 'inc/addons/breadcrumbs/' );

@@ -4,7 +4,7 @@
  *
  * @package     Astra
  * @author      Astra
- * @copyright   Copyright (c) 2019, Astra
+ * @copyright   Copyright (c) 2020, Astra
  * @link        https://wpastra.com/
  * @since       Astra 1.0.0
  */
@@ -132,7 +132,10 @@ final class Astra_Fonts {
 		$font_args = array();
 		$family    = array();
 
+		// This is deprecated filter hook.
 		$fonts = apply_filters( 'astra_google_fonts', $fonts );
+
+		$fonts = apply_filters( 'astra_google_fonts_selected', $fonts );
 
 		/* Format Each Font Family in Array */
 		foreach ( $fonts as $font_name => $font_weight ) {

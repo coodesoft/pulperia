@@ -4,7 +4,7 @@
  *
  * @package     Astra
  * @author      Astra
- * @copyright   Copyright (c) 2019, Astra
+ * @copyright   Copyright (c) 2020, Astra
  * @link        https://wpastra.com/
  * @since       Astra 1.0.0
  */
@@ -110,7 +110,7 @@ if ( ! class_exists( 'Astra_Sidebar_Layout_Configs' ) ) {
 					'default'  => astra_get_option( 'archive-post-sidebar-layout' ),
 					'section'  => 'section-sidebars',
 					'priority' => 5,
-					'title'    => __( 'Blog Post Archives', 'astra' ),
+					'title'    => __( 'Archives', 'astra' ),
 					'choices'  => array(
 						'default'       => __( 'Default', 'astra' ),
 						'no-sidebar'    => __( 'No Sidebar', 'astra' ),
