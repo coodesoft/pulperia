@@ -138,17 +138,11 @@ add_shortcode('astra_phpinfo_short_code', 'astra_phpinfo_short_code');
 
 function astra_child_postimage_carousel($attr){
 
-	$args = [
-    'post_type'   => 'attachment',
-    'numberposts' => null,
-    'post_status' => null,
-    'post_parent' => $attr['id']
-  ];
+	$imagenes = get_field('portfolio_gallery');
 
-	$imagenes = get_posts($args);
+	if (count($imagenes) > 0) {
 
-	if ($imagenes) {
-		$html = '<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+		echo '<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 						 <div id="myCarousel" class="carousel slide" data-ride="carousel">
 					       <ol class="carousel-indicators">';
 
@@ -157,32 +151,30 @@ function astra_child_postimage_carousel($attr){
 		$carousel_name = 'myCarousel';
 		foreach ($imagenes as $imagen) {
 			if ($c == 0) { $class = 'active'; } else { $class = ''; }
-			$html .= '<li data-target="#'.$carousel_name.'" data-slide-to="'.$c.'" class="'.$class.'"></li>';
+			echo '<li data-target="#'.$carousel_name.'" data-slide-to="'.$c.'" class="'.$class.'"></li>';
 			$c ++;
 		}
 
-		$html .= '</ol>';
+		echo '</ol>';
 
-		$html .= '<div class="carousel-inner" role="listbox">';
+		echo '<div class="carousel-inner" role="listbox">';
 
 		$c = 0;
 		foreach ($imagenes as $imagen) {
 	     if ($c == 0) { $class = 'item active'; } else { $class = 'item'; }
 
-			 $img_url = wp_get_attachment_image_src($imagen->ID, 'full')[0];
-
-			 $html .= '<div class="'.$class.'">
-									 <img src="'.$img_url.'" alt="Chania">
+			 echo '<div class="'.$class.'">
+									 <img src="'.$imagen['foto_archivo']['url'].'" alt="'.$imagen['foto_titulo'].'">
 									 <div class="carousel-caption">
-										 	<h3>'.apply_filters( 'the_title', $imagen->post_title ).'</h3>
-										 	<p></p>
+										 	<h3>'.$imagen['foto_titulo'].'</h3>
+										 	<p>'.'Autor: '.$imagen['foto_autor'].' · Lugar:'.$imagen['foto_lugar'].' · Fecha: '.$imagen['foto_fecha'].' · Licencia: '.$imagen['foto_licencia'].'</p>
 									 </div>
 								 </div>';
 			 $c ++;
 	  }
 
-		$html .= '</div>';
-		$html .= '<a class="left carousel-control" href="#'.$carousel_name.'" role="button" data-slide="prev">
+		echo '</div>';
+		echo '<a class="left carousel-control" href="#'.$carousel_name.'" role="button" data-slide="prev">
 							<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
 							<span class="sr-only">Previous</span>
 							</a>
@@ -193,7 +185,6 @@ function astra_child_postimage_carousel($attr){
 							</div>';
 	}
 
-	return $html;
 }
 add_shortcode('astra_child_postimage_carousel', 'astra_child_postimage_carousel');
 
