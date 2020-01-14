@@ -137,10 +137,18 @@ function astra_phpinfo_short_code($attr){
 add_shortcode('astra_phpinfo_short_code', 'astra_phpinfo_short_code');
 
 function astra_child_postimage_carousel($attr){
+	$args = [
+    'post_type'   => 'attachment',
+    'numberposts' => null,
+    'post_status' => null,
+    'post_parent' => $attr['id']
+  ];
+
+	$imagenes_post = get_posts($args);
 
 	$imagenes = get_field('portfolio_gallery');
 
-	if (count($imagenes) > 0) {
+	if ($imagenes || $imagenes_post) {
 
 		echo '<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 						 <div id="myCarousel" class="carousel slide" data-ride="carousel">
@@ -149,10 +157,20 @@ function astra_child_postimage_carousel($attr){
 		$c             = 0;
 		$class         = '';
 		$carousel_name = 'myCarousel';
-		foreach ($imagenes as $imagen) {
-			if ($c == 0) { $class = 'active'; } else { $class = ''; }
-			echo '<li data-target="#'.$carousel_name.'" data-slide-to="'.$c.'" class="'.$class.'"></li>';
-			$c ++;
+		if ($imagenes){
+			foreach ($imagenes as $imagen) {
+				if ($c == 0) { $class = 'active'; } else { $class = ''; }
+				echo '<li data-target="#'.$carousel_name.'" data-slide-to="'.$c.'" class="'.$class.'"></li>';
+				$c ++;
+			}
+		}
+
+		if($imagenes_post && !$imagenes){
+			foreach ($imagenes_post as $imagen) {
+				if ($c == 0) { $class = 'active'; } else { $class = ''; }
+				echo '<li data-target="#'.$carousel_name.'" data-slide-to="'.$c.'" class="'.$class.'"></li>';
+				$c ++;
+			}
 		}
 
 		echo '</ol>';
@@ -160,18 +178,39 @@ function astra_child_postimage_carousel($attr){
 		echo '<div class="carousel-inner" role="listbox">';
 
 		$c = 0;
-		foreach ($imagenes as $imagen) {
-	     if ($c == 0) { $class = 'item active'; } else { $class = 'item'; }
+		if ($imagenes){
+			foreach ($imagenes as $imagen) {
+		     if ($c == 0) { $class = 'item active'; } else { $class = 'item'; }
+				 $html = '';
+				 if ($imagen['foto_autor'] != '') { $html .= 'Autor: '.$imagen['foto_autor']; }
+				 if ($imagen['foto_lugar'] != '') { $html .= ' · Lugar: '.$imagen['foto_lugar']; }
+				 if ($imagen['foto_fecha'] != '') { $html .= ' · Fecha: '.$imagen['foto_fecha']; }
+				 if ($imagen['foto_licencia'] != '') { $html .= ' · Licencia: '.$imagen['foto_licencia']; }
 
-			 echo '<div class="'.$class.'">
-									 <img src="'.$imagen['foto_archivo']['url'].'" alt="'.$imagen['foto_titulo'].'">
-									 <div class="carousel-caption">
-										 	<h3>'.$imagen['foto_titulo'].'</h3>
-										 	<p>'.'Autor: '.$imagen['foto_autor'].' · Lugar:'.$imagen['foto_lugar'].' · Fecha: '.$imagen['foto_fecha'].' · Licencia: '.$imagen['foto_licencia'].'</p>
-									 </div>
-								 </div>';
-			 $c ++;
-	  }
+				 echo '<div class="'.$class.'">
+										 <img src="'.$imagen['foto_archivo']['url'].'" alt="'.$imagen['foto_titulo'].'">
+										 <div class="carousel-caption">
+											 	<h3>'.$imagen['foto_titulo'].'</h3>
+											 	<p>'.$html.'</p>
+										 </div>
+									 </div>';
+				 $c ++;
+		  }
+		}
+
+		if($imagenes_post && !$imagenes){
+			foreach ($imagenes_post as $imagen) {
+		     if ($c == 0) { $class = 'item active'; } else { $class = 'item'; }
+
+				 $img_url = wp_get_attachment_image_src($imagen->ID, 'full')[0];
+
+				 echo '<div class="'.$class.'">
+										 <img src="'.$img_url.'" alt="Chania">
+
+									 </div>';
+				 $c ++;
+		  }
+		}
 
 		echo '</div>';
 		echo '<a class="left carousel-control" href="#'.$carousel_name.'" role="button" data-slide="prev">
