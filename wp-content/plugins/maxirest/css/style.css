@@ -1,0 +1,265 @@
+.myContent h4, .myContent h3, .myContent h2, .myContent h1 {
+    font-family: "Lato","Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-weight: 400;
+    line-height: 1.1;
+}
+
+.myContent p{
+	font-family: "Lato","Helvetica Neue",Helvetica,Arial,sans-serif;
+	font-size: 15px;
+	line-height: 1.42857143;
+}
+
+.myContentMenu, .myContent {
+	height:90vh;
+	overflow-y: auto;
+}
+
+.myContent{
+	background-color: #FFFFFF;
+}
+
+.myContentMenu{
+	overflow-x: hidden;
+}
+
+.allContent{
+}
+
+.myBar {
+	height:10vh !important;
+    min-height:12vh !important;
+	overflow: hidden;
+}
+
+.container {
+		box-shadow: 0 0 2.2em gray;
+}
+
+.myLogo{
+	margin-top: 0.5em;
+	max-height: 8vh;
+	min-height: 4vh;
+}
+
+.tituloPpal{ /*** titulo ***/
+    font-size: 2em;
+}
+
+/* Toggle Styles */
+
+#wrapper {
+    padding-left: 0;
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+}
+
+#wrapper.toggled {
+    padding-left: 250px;
+}
+
+#sidebar-wrapper {
+    z-index: 1000;
+    position: fixed;
+    left: 250px;
+    width: 0;
+    height: 100%;
+    margin-left: -250px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+}
+
+#wrapper.toggled #sidebar-wrapper {
+    width: 250px;
+}
+
+#page-content-wrapper {
+    width: 100%;
+    position: absolute;
+    /*padding: 15px;*/
+}
+
+#wrapper.toggled #page-content-wrapper {
+    position: absolute;
+    margin-right: -250px;
+}
+
+/* Sidebar Styles */
+
+.sidebar-nav {
+    position: absolute;
+    top: 0;
+    width: 250px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    padding-top: 3em;
+}
+
+.sidebar-nav li {
+    text-indent: 1.5em;
+    line-height: 2.5em;
+}
+
+.sidebar-nav li a {
+    display: block;
+    text-decoration: none;
+}
+
+.sidebar-nav li a.sub {
+     font-size: 0.9em;
+     font-style: italic;
+     padding-left: 1em;
+}
+.sidebar-nav li a.sub:before {
+     content: "- ";
+}
+
+.sidebar-nav li a:hover {
+    text-decoration: none;
+    background: rgba(255,255,255,0.1);
+}
+
+.sidebar-nav li a:active,
+.sidebar-nav li a:focus {
+    text-decoration: none;
+}
+
+.sub-list{
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.nombre{
+	font-size: 1.05em;
+	font-weight: 500;
+}
+
+.precio p{
+	font-weight: bold;
+}
+
+.descripcion{
+	font-size: 0.85em;
+	font-style: italic;
+}
+
+@media(min-width:768px) {
+    #wrapper {
+        /*padding-left: 250px;*/
+    }
+
+    #wrapper.toggled {
+        padding-left: 0;
+    }
+
+    #sidebar-wrapper {
+        width: 250px;
+    }
+
+    #wrapper.toggled #sidebar-wrapper {
+        width: 0;
+    }
+
+    #page-content-wrapper {
+        position: relative;
+    }
+
+    #wrapper.toggled #page-content-wrapper {
+        position: relative;
+        margin-right: 0;
+    }
+
+}
+
+@media(max-width:768px) {
+
+	html,body {
+		overflow-x: hidden;
+	}
+
+	.myContent{
+		padding-top: 1em;
+		padding-left: 1em;
+		padding-right: 1em;
+	}
+
+	#menu-toggle{
+		font-size: 4vh;
+		color: #FFF;
+		cursor: pointer;
+        margin-top: .75em;
+        z-index: 10;
+	}
+
+	#menu-toggle:hover{
+		color: #EEE;
+	}
+
+	.myLogo{
+		margin: auto;
+		margin-top: 0.5em;
+	}
+
+}
+
+/*@media(max-height:320px) {
+
+	.myContentMenu, .myContent {
+		height:80vh !important;
+	}
+
+	.myBar {
+		height:20vh !important;
+	}
+
+	.myLogo{
+		margin-top: 0.5em;
+		max-height: 8vh;
+		min-height: 4vh;
+	}
+
+}*/
+
+
+/****************** ESTILOS DE COLOR POR DEFAULT ******/
+
+/*** Encabezado ***/
+.colorHeaderTexto, .tituloPpal{ /*** titulo ***/
+    color: #FFFFFF;
+}
+
+.colorHeaderFondo, .myBar { /*** fondo ***/
+    background-color: #735385;
+}
+
+/*** Menu (en cuerpo y plegable)***/
+
+.colorMenuTexto, .sidebar-nav li a { /*** item ***/
+    color: #FFF;
+}
+
+.colorMenuSeleccionado, .sidebar-nav li a:hover { /*** item:hover ***/
+    color: #FEA000;
+}
+
+.colorMenuFondo, .myContentMenu, #sidebar-wrapper{ /*** fondo ***/
+    background-color: #3C3C3C;
+}
+
+/*** Rubros y subrubros ***/
+
+.colorTituloRubro, .rubro h3{
+    color: #659E35;
+}
+
+.colorTituloSubrubro, .subrubro h4{
+    color: #F65B2B;
+}
