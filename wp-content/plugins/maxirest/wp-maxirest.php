@@ -10,16 +10,17 @@ License: GPL2
 */
 
 function astra_mxibook_data_short_code($attrs){
-	 $id = $attrs['id'];
+	 $id     = $attrs['id'];
+	 $height = $attrs['height'];
+	 $width  = $attrs['width'];
 
 	 $menu = curl_init('https://api-mscrm.maxisistemas.com.ar/api-menuweb/public/v1/menu/'.$id);
 	 curl_setopt($menu, CURLOPT_RETURNTRANSFER, 1);
 	 $menu = curl_exec($menu);
 	 $data = json_decode($menu, true);
 
-	 $html  = '<div id="datawebIframe" style="height:3000px; width:100%;">';
-	 //$html .= '<div id="content"> <div id="wrapper"> <div id="page-content-wrapper"> <div class="container">
-	  //         <div class="allContent row">';
+	 $html  = '<div id="datawebIframe" style="height:'.$height.'; width:'.$width.';">';
+
 	 $html .= '<div class="myContent col-sm-12">';
 	 //se recorren los rubros
 	 foreach($data as $v){
@@ -57,7 +58,6 @@ function astra_mxibook_data_short_code($attrs){
 
 	 $html .= '</div>';
 	 $html .= '</div>';
-	// $html .= '</div> </div> </div> </div> </div>';
 
 	 //se adjuntan los estilos
 	 $url_plugin = plugin_dir_url(__FILE__);
